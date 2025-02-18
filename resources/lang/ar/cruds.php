@@ -417,7 +417,7 @@ return [
             'updated_at_helper'       => ' ',
             'deleted_at'              => 'تم الحذف في',
             'deleted_at_helper'       => ' ',
-            'affiliation_link'        => 'رابط الانتماء',
+            'affiliation_link'        => 'رابط التواصل',
             'affiliation_link_helper' => ' ',
         ],
     ],

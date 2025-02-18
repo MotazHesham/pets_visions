@@ -20,10 +20,7 @@ class UpdateParamedicRequest extends FormRequest
             'name' => [
                 'string',
                 'required',
-            ],
-            'active' => [
-                'required',
-            ],
+            ], 
             'from_time' => [
                 'required',
                 'date_format:' . config('panel.time_format'),

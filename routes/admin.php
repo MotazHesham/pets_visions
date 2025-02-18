@@ -79,6 +79,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
 
     // Paramedics
     Route::delete('paramedics/destroy', 'ParamedicsController@massDestroy')->name('paramedics.massDestroy');
+    Route::post('paramedics/update_statuses', 'ParamedicsController@update_statuses')->name('paramedics.update_statuses');
     Route::resource('paramedics', 'ParamedicsController');
 
     // Hostings

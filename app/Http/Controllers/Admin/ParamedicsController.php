@@ -14,6 +14,13 @@ use Yajra\DataTables\Facades\DataTables;
 
 class ParamedicsController extends Controller
 {
+    public function update_statuses(Request $request){ 
+        $type = $request->type;
+        $paramedic = Paramedic::findOrFail($request->id);
+        $paramedic->$type = $request->status; 
+        $paramedic->save();
+        return 1;
+    }
     public function index(Request $request)
     {
         abort_if(Gate::denies('paramedic_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
@@ -46,8 +53,11 @@ class ParamedicsController extends Controller
             $table->editColumn('name', function ($row) {
                 return $row->name ? $row->name : '';
             });
-            $table->editColumn('active', function ($row) {
-                return '<input type="checkbox" disabled ' . ($row->active ? 'checked' : null) . '>';
+            $table->editColumn('active', function ($row) { 
+                return '<label class="c-switch c-switch-pill c-switch-success">
+                            <input onchange="update_statuses(this,\'active\')" value="'. $row->id .'" type="checkbox" class="c-switch-input" '. ($row->active ? "checked" : null) .' >
+                            <span class="c-switch-slider"></span>
+                        </label>' ;
             });
             $table->editColumn('from_time', function ($row) {
                 return $row->from_time ? $row->from_time : '';

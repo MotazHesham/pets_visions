@@ -19,19 +19,7 @@
                     </div>
                 @endif
                 <span class="help-block">{{ trans('cruds.paramedic.fields.name_helper') }}</span>
-            </div>
-            <div class="form-group">
-                <div class="form-check {{ $errors->has('active') ? 'is-invalid' : '' }}">
-                    <input class="form-check-input" type="checkbox" name="active" id="active" value="1" {{ $paramedic->active || old('active', 0) === 1 ? 'checked' : '' }} required>
-                    <label class="required form-check-label" for="active">{{ trans('cruds.paramedic.fields.active') }}</label>
-                </div>
-                @if($errors->has('active'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('active') }}
-                    </div>
-                @endif
-                <span class="help-block">{{ trans('cruds.paramedic.fields.active_helper') }}</span>
-            </div>
+            </div> 
             <div class="form-group">
                 <label class="required" for="from_time">{{ trans('cruds.paramedic.fields.from_time') }}</label>
                 <input class="form-control timepicker {{ $errors->has('from_time') ? 'is-invalid' : '' }}" type="text" name="from_time" id="from_time" value="{{ old('from_time', $paramedic->from_time) }}" required>
