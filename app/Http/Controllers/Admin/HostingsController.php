@@ -92,18 +92,35 @@ class HostingsController extends Controller
 
     public function create()
     {
-        abort_if(Gate::denies('hosting_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-        $users = User::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        abort_if(Gate::denies('hosting_create'), Response::HTTP_FORBIDDEN, '403 Forbidden'); 
 
         $hosting_services = HostingService::pluck('name', 'id');
 
-        return view('admin.hostings.create', compact('hosting_services', 'users'));
+        return view('admin.hostings.create', compact('hosting_services' ));
     }
 
     public function store(StoreHostingRequest $request)
-    {
-        $hosting = Hosting::create($request->all());
+    { 
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'password' => $request->password,
+            'approved' => 1,
+            'user_type' => 'host',
+            'identity_num' => $request->identity_num, 
+            'user_position' => $request->user_position,
+        ]);
+        $hosting = Hosting::create([    
+            'user_id' => $user->id,
+            'hosting_name' => $request->hosting_name,
+            'hosting_phone' => $request->hosting_phone,
+            'hosting_type' => $request->hosting_type,
+            'short_description' => $request->short_description,
+            'address' => $request->address,
+            'affiliation_link' => $request->affiliation_link,
+            'about_us' => $request->about_us, 
+        ]);
         $hosting->hosting_services()->sync($request->input('hosting_services', []));
         if ($request->input('logo', false)) {
             $hosting->addMedia(storage_path('tmp/uploads/' . basename($request->input('logo'))))->toMediaCollection('logo');
@@ -134,20 +151,38 @@ class HostingsController extends Controller
 
     public function edit(Hosting $hosting)
     {
-        abort_if(Gate::denies('hosting_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-        $users = User::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        abort_if(Gate::denies('hosting_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden'); 
 
         $hosting_services = HostingService::pluck('name', 'id');
 
         $hosting->load('user', 'hosting_services');
 
-        return view('admin.hostings.edit', compact('hosting', 'hosting_services', 'users'));
+        $user = $hosting->user;
+
+        return view('admin.hostings.edit', compact('hosting', 'hosting_services', 'user'));
     }
 
     public function update(UpdateHostingRequest $request, Hosting $hosting)
     {
-        $hosting->update($request->all());
+        $user = $hosting->user;
+        $user->update([     
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'password' => $request->password, 
+            'identity_num' => $request->identity_num, 
+            'user_position' => $request->user_position,
+        ]);
+        
+        $hosting->update([     
+            'hosting_name' => $request->hosting_name,
+            'hosting_phone' => $request->hosting_phone,
+            'hosting_type' => $request->hosting_type,
+            'short_description' => $request->short_description,
+            'address' => $request->address,
+            'affiliation_link' => $request->affiliation_link,
+            'about_us' => $request->about_us, 
+        ]); 
         $hosting->hosting_services()->sync($request->input('hosting_services', []));
         if ($request->input('logo', false)) {
             if (! $hosting->logo || $request->input('logo') !== $hosting->logo->file_name) {

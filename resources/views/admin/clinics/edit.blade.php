@@ -36,7 +36,7 @@
                                 <span class="help-block">{{ trans('cruds.user.fields.email_helper') }}</span>
                             </div>
                             <div class="form-group col-md-6">
-                                <label class="required" for="password">{{ trans('cruds.user.fields.password') }}</label>
+                                <label  for="password">{{ trans('cruds.user.fields.password') }}</label>
                                 <input class="form-control {{ $errors->has('password') ? 'is-invalid' : '' }}"
                                     type="password" name="password" id="password">
                                 @if ($errors->has('password'))
