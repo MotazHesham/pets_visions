@@ -29,10 +29,7 @@
                         </th>
                         <th>
                             {{ trans('cruds.store.fields.store_phone') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.store.fields.domain') }}
-                        </th>
+                        </th> 
                         <th>
                             {{ trans('cruds.store.fields.logo') }}
                         </th>
@@ -137,11 +134,7 @@
                     {
                         data: 'store_phone',
                         name: 'store_phone'
-                    },
-                    {
-                        data: 'domain',
-                        name: 'domain'
-                    },
+                    }, 
                     {
                         data: 'logo',
                         name: 'logo',

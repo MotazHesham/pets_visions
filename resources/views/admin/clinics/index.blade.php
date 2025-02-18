@@ -43,6 +43,9 @@
                             {{ trans('cruds.clinic.fields.user') }}
                         </th>
                         <th>
+                            {{ trans('cruds.user.fields.approved') }}
+                        </th>
+                        <th>
                             &nbsp;
                         </th>
                     </tr>
@@ -152,6 +155,10 @@
                     {
                         data: 'user_name',
                         name: 'user.name'
+                    },
+                    {
+                        data: 'user_approved',
+                        name: 'user.approved'
                     },
                     {
                         data: 'actions',

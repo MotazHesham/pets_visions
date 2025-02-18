@@ -82,7 +82,7 @@ class StoresController extends Controller
             $table->editColumn('specializations', function ($row) {
                 $labels = [];
                 foreach ($row->specializations as $specialization) {
-                    $labels[] = sprintf('<span class="label label-info label-many">%s</span>', $specialization->name);
+                    $labels[] = sprintf('<span class="badge badge-info badge-many">%s</span>', $specialization->name);
                 }
 
                 return implode(' ', $labels);

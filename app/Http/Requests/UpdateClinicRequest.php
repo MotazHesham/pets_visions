@@ -17,6 +17,26 @@ class UpdateClinicRequest extends FormRequest
     public function rules()
     {
         return [
+            'name' => [
+                'string',
+                'required',
+            ],
+            'email' => [
+                'required',
+                'unique:users,email,' . request()->user_id,
+            ], 
+            'identity_num' => [
+                'string',
+                'nullable',
+            ],
+            'phone' => [
+                'string',
+                'nullable',
+            ],
+            'user_position' => [
+                'string',
+                'nullable',
+            ],
             'clinic_name' => [
                 'string',
                 'required',

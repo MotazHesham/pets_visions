@@ -60,6 +60,12 @@ class ClinicsController extends Controller
             $table->editColumn('short_description', function ($row) {
                 return $row->short_description ? $row->short_description : '';
             });
+            $table->editColumn('user_approved', function ($row) {
+                return '<label class="c-switch c-switch-pill c-switch-success">
+                            <input onchange="update_statuses(this,\'approved\')" value="'. $row->user_id .'" type="checkbox" class="c-switch-input" '. ($row->user->approved ? "checked" : null) .' >
+                            <span class="c-switch-slider"></span>
+                        </label>' ;
+            });
             $table->editColumn('logo', function ($row) {
                 if ($photo = $row->logo) {
                     return sprintf(
@@ -75,7 +81,7 @@ class ClinicsController extends Controller
                 return $row->user ? $row->user->name : '';
             });
 
-            $table->rawColumns(['actions', 'placeholder', 'logo', 'user']);
+            $table->rawColumns(['actions', 'placeholder', 'logo', 'user','user_approved']);
 
             return $table->make(true);
         }
@@ -85,16 +91,33 @@ class ClinicsController extends Controller
 
     public function create()
     {
-        abort_if(Gate::denies('clinic_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('clinic_create'), Response::HTTP_FORBIDDEN, '403 Forbidden'); 
 
-        $users = User::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
-
-        return view('admin.clinics.create', compact('users'));
+        return view('admin.clinics.create');
     }
 
     public function store(StoreClinicRequest $request)
     {
-        $clinic = Clinic::create($request->all());
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'password' => $request->password,
+            'approved' => 1,
+            'user_type' => 'clinic',
+            'identity_num' => $request->identity_num, 
+            'user_position' => $request->user_position,
+        ]);
+        $clinic = Clinic::create([
+            'user_id' => $user->id,
+            'clinic_name' => $request->clinic_name,
+            'clinic_phone' => $request->clinic_phone,
+            'unified_phone' => $request->unified_phone,
+            'short_description' => $request->short_description,
+            'address' => $request->address,
+            'description' => $request->description,
+            'about_us' => $request->about_us, 
+        ]);
 
         if ($request->input('cover', false)) {
             $clinic->addMedia(storage_path('tmp/uploads/' . basename($request->input('cover'))))->toMediaCollection('cover');
@@ -121,18 +144,35 @@ class ClinicsController extends Controller
 
     public function edit(Clinic $clinic)
     {
-        abort_if(Gate::denies('clinic_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-        $users = User::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        abort_if(Gate::denies('clinic_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden'); 
 
         $clinic->load('user');
 
-        return view('admin.clinics.edit', compact('clinic', 'users'));
+        $user = $clinic->user;
+
+        return view('admin.clinics.edit', compact('clinic', 'user'));
     }
 
     public function update(UpdateClinicRequest $request, Clinic $clinic)
     {
-        $clinic->update($request->all());
+        $user = $clinic->user;
+        $user->update([ 
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'password' => $request->password, 
+            'identity_num' => $request->identity_num, 
+            'user_position' => $request->user_position,
+        ]);
+        $clinic->update([ 
+            'clinic_name' => $request->clinic_name,
+            'clinic_phone' => $request->clinic_phone,
+            'unified_phone' => $request->unified_phone,
+            'short_description' => $request->short_description,
+            'address' => $request->address,
+            'description' => $request->description,
+            'about_us' => $request->about_us, 
+        ]);  
 
         if ($request->input('cover', false)) {
             if (! $clinic->cover || $request->input('cover') !== $clinic->cover->file_name) {
@@ -187,7 +227,9 @@ class ClinicsController extends Controller
 
         $clinic->load('user', 'clinicClinicServices', 'clinicClinicReviews');
 
-        return view('admin.clinics.show', compact('clinic'));
+        $user = $clinic->user;
+        
+        return view('admin.clinics.show', compact('clinic','user'));
     }
 
     public function destroy(Clinic $clinic)
