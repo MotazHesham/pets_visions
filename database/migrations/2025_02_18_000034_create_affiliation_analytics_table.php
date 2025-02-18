@@ -11,7 +11,7 @@ class CreateAffiliationAnalyticsTable extends Migration
         Schema::create('affiliation_analytics', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('model_type')->nullable();
-            $table->integer('model')->nullable();
+            $table->integer('model_id')->nullable();
             $table->string('ip')->nullable();
             $table->integer('num_of_clicks')->nullable();
             $table->timestamps();

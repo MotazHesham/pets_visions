@@ -18,7 +18,7 @@ class CreateProductsTable extends Migration
             $table->string('video_provider')->nullable();
             $table->string('video_link')->nullable();
             $table->string('added_by')->nullable();
-            $table->string('tags')->nullable();
+            $table->text('tags')->nullable();
             $table->boolean('published')->default(0)->nullable();
             $table->boolean('featured')->default(0)->nullable();
             $table->string('affiliation_link')->nullable();

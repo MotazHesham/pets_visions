@@ -1,12 +1,19 @@
-<div id="sidebar" class="c-sidebar c-sidebar-fixed c-sidebar-lg-show">
+<div id="sidebar" class="c-sidebar c-sidebar-fixed c-sidebar-lg-show" style="background: {{ get_setting("sidemenu_background","#212631") }}">
 
     <div class="c-sidebar-brand d-md-down-none">
         <a class="c-sidebar-brand-full h4" href="#">
-            {{ trans('panel.site_title') }}
+            @if(get_setting('logo'))
+                <div class="p-4">    
+                    <img src="{{asset(get_setting('logo'))}}" width="50" alt="">
+                    {{ get_setting('site_name') }}
+                </div>
+            @else 
+                {{ get_setting('site_name') }}
+            @endif
         </a>
     </div>
 
-    <ul class="c-sidebar-nav">
+    <ul class="c-sidebar-nav" style="background: {{ get_setting("sidemenu_background","#212631") }}"> 
         <li class="c-sidebar-nav-item">
             <a href="{{ route("admin.home") }}" class="c-sidebar-nav-link">
                 <i class="c-sidebar-nav-icon fas fa-fw fa-tachometer-alt">
@@ -23,17 +30,7 @@
                     </i>
                     {{ trans('cruds.userManagement.title') }}
                 </a>
-                <ul class="c-sidebar-nav-dropdown-items">
-                    @can('permission_access')
-                        <li class="c-sidebar-nav-item">
-                            <a href="{{ route("admin.permissions.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/permissions") || request()->is("admin/permissions/*") ? "c-active" : "" }}">
-                                <i class="fa-fw fas fa-unlock-alt c-sidebar-nav-icon">
-
-                                </i>
-                                {{ trans('cruds.permission.title') }}
-                            </a>
-                        </li>
-                    @endcan
+                <ul class="c-sidebar-nav-dropdown-items"> 
                     @can('role_access')
                         <li class="c-sidebar-nav-item">
                             <a href="{{ route("admin.roles.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/roles") || request()->is("admin/roles/*") ? "c-active" : "" }}">
@@ -115,17 +112,7 @@
                                 {{ trans('cruds.productReview.title') }}
                             </a>
                         </li>
-                    @endcan
-                    @can('product_wishlist_access')
-                        <li class="c-sidebar-nav-item">
-                            <a href="{{ route("admin.product-wishlists.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/product-wishlists") || request()->is("admin/product-wishlists/*") ? "c-active" : "" }}">
-                                <i class="fa-fw fas fa-cogs c-sidebar-nav-icon">
-
-                                </i>
-                                {{ trans('cruds.productWishlist.title') }}
-                            </a>
-                        </li>
-                    @endcan
+                    @endcan 
                 </ul>
             </li>
         @endcan

@@ -181,11 +181,7 @@ class PermissionsTableSeeder extends Seeder
             [
                 'id'    => 43,
                 'title' => 'product_review_access',
-            ],
-            [
-                'id'    => 44,
-                'title' => 'product_wishlist_access',
-            ],
+            ], 
             [
                 'id'    => 45,
                 'title' => 'clinic_managment_access',

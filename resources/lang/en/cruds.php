@@ -145,6 +145,8 @@ return [
             'domain_helper'          => ' ',
             'specializations'        => 'Specializations',
             'specializations_helper' => ' ',
+            'commercial_register_photo'        => 'Commercial Register Photo',
+            'commercial_register_photo_helper' => ' ',
         ],
     ],
     'storeManagment' => [

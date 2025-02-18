@@ -22,7 +22,7 @@ class AffiliationAnalytic extends Model
 
     protected $fillable = [
         'model_type',
-        'model',
+        'model_id',
         'ip',
         'num_of_clicks',
         'user_id',

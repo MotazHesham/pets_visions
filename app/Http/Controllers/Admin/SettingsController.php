@@ -3,77 +3,111 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\MassDestroySettingRequest;
-use App\Http\Requests\StoreSettingRequest;
-use App\Http\Requests\UpdateSettingRequest;
+use App\Http\Controllers\Traits\MediaUploadingTrait;  
 use App\Models\Setting;
 use Gate;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan; 
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\File\File;
 
 class SettingsController extends Controller
 {
+    use MediaUploadingTrait;
+
     public function index()
     {
-        abort_if(Gate::denies('setting_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-        $settings = Setting::all();
-
-        return view('admin.settings.index', compact('settings'));
-    }
-
-    public function create()
-    {
-        abort_if(Gate::denies('setting_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-        return view('admin.settings.create');
-    }
-
-    public function store(StoreSettingRequest $request)
-    {
-        $setting = Setting::create($request->all());
-
-        return redirect()->route('admin.settings.index');
-    }
-
-    public function edit(Setting $setting)
-    {
+        
         abort_if(Gate::denies('setting_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return view('admin.settings.edit', compact('setting'));
-    }
+        return view('admin.settings.index');
+    } 
 
-    public function update(UpdateSettingRequest $request, Setting $setting)
+    public function update(Request $request)
     {
-        $setting->update($request->all());
+        if($request->setting_type == 'setting_1'){ 
+            Setting::updateOrCreate(['key' => 'site_name'], ['value' => $request->site_name]);
+            Setting::updateOrCreate(['key' => 'phone'], ['value' => $request->phone]);
+            Setting::updateOrCreate(['key' => 'email'], ['value' => $request->email]);
+            Setting::updateOrCreate(['key' => 'address'], ['value' => $request->address]);
+            Setting::updateOrCreate(['key' => 'description'], ['value' => $request->description]);
+            Setting::updateOrCreate(['key' => 'description_2'], ['value' => $request->description_2]);
+            Setting::updateOrCreate(['key' => 'rescuecase_text'], ['value' => $request->rescuecase_text]);
+            Setting::updateOrCreate(['key' => 'hosting_text'], ['value' => $request->hosting_text]);
+            Setting::updateOrCreate(['key' => 'adoption_text'], ['value' => $request->adoption_text]); 
 
-        return redirect()->route('admin.settings.index');
-    }
+            if ($request->has('logo')) {
+                if( $request->input('logo') != "undefined"){ 
+                    $file = new File(storage_path('tmp/uploads/' . basename($request->input('logo')))); 
+                    $extension = pathinfo($file, PATHINFO_EXTENSION);
+                    $file_name =  time() . '_logo_settings.'. $extension;
+                    $file->move('public/settings',$file_name); 
+                    Setting::updateOrCreate(['key' => 'logo'], ['value' => 'settings/' . $file_name]);
+                }
+            }else{
+                Setting::updateOrCreate(['key' => 'logo'], ['value' => null]);
+            }
+            if ($request->has('about')) {
+                if( $request->input('about') != "undefined"){ 
+                    $file = new File(storage_path('tmp/uploads/' . basename($request->input('about')))); 
+                    $extension = pathinfo($file, PATHINFO_EXTENSION);
+                    $file_name =  time() . '_about_settings.'. $extension;
+                    $file->move('public/settings',$file_name);
+                    Setting::updateOrCreate(['key' => 'about'], ['value' => 'settings/' . $file_name]);
+                }
+            }else{
+                Setting::updateOrCreate(['key' => 'about'], ['value' => null]);
+            }
 
-    public function show(Setting $setting)
-    {
-        abort_if(Gate::denies('setting_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-        return view('admin.settings.show', compact('setting'));
-    }
-
-    public function destroy(Setting $setting)
-    {
-        abort_if(Gate::denies('setting_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-        $setting->delete();
-
-        return back();
-    }
-
-    public function massDestroy(MassDestroySettingRequest $request)
-    {
-        $settings = Setting::find(request('ids'));
-
-        foreach ($settings as $setting) {
-            $setting->delete();
+        }elseif($request->setting_type == 'setting_2'){
+            Setting::updateOrCreate(['key' => 'facebook'], ['value' => $request->facebook]);
+            Setting::updateOrCreate(['key' => 'twitter'], ['value' => $request->twitter]);
+            Setting::updateOrCreate(['key' => 'instagram'], ['value' => $request->instagram]);
+            Setting::updateOrCreate(['key' => 'googleplus'], ['value' => $request->googleplus]); 
+        }elseif($request->setting_type == 'setting_3'){ 
+            Setting::updateOrCreate(['key' => 'meta_title'], ['value' => $request->meta_title]);
+            Setting::updateOrCreate(['key' => 'meta_description'], ['value' => $request->meta_description]);
+            Setting::updateOrCreate(['key' => 'meta_keywords'], ['value' => implode(',',$request->meta_keywords)]); 
+            if ($request->has('metaimage')) { 
+                if($request->input('metaimage') != "undefined"){ 
+                    $file = new File(storage_path('tmp/uploads/' . basename($request->input('metaimage')))); 
+                    $extension = pathinfo($file, PATHINFO_EXTENSION);
+                    $file_name =  time() . '_metaimage_settings.'. $extension;
+                    $file->move('public/settings',$file_name);
+                    Setting::updateOrCreate(['key' => 'metaimage'], ['value' => 'settings/' . $file_name]);
+                }
+            }else{
+                Setting::updateOrCreate(['key' => 'metaimage'], ['value' => null]);
+            }
+        }elseif($request->setting_type == 'setting_4'){
+            Setting::updateOrCreate(['key' => 'count_stores'], values: ['value' => $request->count_stores]);
+            Setting::updateOrCreate(['key' => 'count_pets'], ['value' => $request->count_pets]); 
+            Setting::updateOrCreate(['key' => 'count_tweets'], ['value' => $request->count_tweets]); 
+            Setting::updateOrCreate(['key' => 'count_products'], ['value' => $request->count_products]); 
+        }elseif($request->setting_type == 'setting_5'){
+            Setting::updateOrCreate(['key' => 'font_size'], ['value' => $request->font_size]); 
+            Setting::updateOrCreate(['key' => 'sidemenu_background'], ['value' => $request->sidemenu_background]); 
+            Setting::updateOrCreate(['key' => 'sidemenu_font_color'], ['value' => $request->sidemenu_font_color]); 
+            Setting::updateOrCreate(['key' => 'sidemenu_icon_color'], ['value' => $request->sidemenu_icon_color]);  
+            Setting::updateOrCreate(['key' => 'font_link'], ['value' => implode(',',$request->font_link)]); 
+            Setting::updateOrCreate(['key' => 'font_name'], ['value' => implode(',',$request->font_name)]); 
         }
+        
 
-        return response(null, Response::HTTP_NO_CONTENT);
+        Artisan::call('cache:clear');
+        
+        return redirect()->route('admin.settings.index',['setting_type' => $request->setting_type]);
+    }
+
+    public function storeCKEditorImages(Request $request)
+    {
+        abort_if(Gate::denies('setting_create') && Gate::denies('setting_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        $model = new Setting();
+        $model->id = $request->input('crud_id', 0);
+        $model->exists = true;
+        $media = $model->addMediaFromRequest('upload')->toMediaCollection('ck-media');
+
+        return response()->json(['id' => $media->id, 'url' => $media->getUrl()], Response::HTTP_CREATED);
     }
 }

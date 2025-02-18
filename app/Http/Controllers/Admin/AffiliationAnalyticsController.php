@@ -44,8 +44,8 @@ class AffiliationAnalyticsController extends Controller
             $table->editColumn('model_type', function ($row) {
                 return $row->model_type ? AffiliationAnalytic::MODEL_TYPE_SELECT[$row->model_type] : '';
             });
-            $table->editColumn('model', function ($row) {
-                return $row->model ? $row->model : '';
+            $table->editColumn('model_id', function ($row) {
+                return $row->model_id ? $row->model_id : '';
             });
             $table->editColumn('ip', function ($row) {
                 return $row->ip ? $row->ip : '';

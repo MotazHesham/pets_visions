@@ -15,12 +15,19 @@ use Yajra\DataTables\Facades\DataTables;
 
 class UsersController extends Controller
 {
+    public function update_statuses(Request $request){ 
+        $type = $request->type;
+        $user = User::findOrFail($request->id);
+        $user->$type = $request->status; 
+        $user->save();
+        return 1;
+    }
     public function index(Request $request)
     {
         abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         if ($request->ajax()) {
-            $query = User::with(['roles'])->select(sprintf('%s.*', (new User)->table));
+            $query = User::with(['roles'])->where('user_type','staff')->select(sprintf('%s.*', (new User)->table));
             $table = Datatables::of($query);
 
             $table->addColumn('placeholder', '&nbsp;');
@@ -28,8 +35,8 @@ class UsersController extends Controller
 
             $table->editColumn('actions', function ($row) {
                 $viewGate      = 'user_show';
-                $editGate      = 'user_edit';
-                $deleteGate    = 'user_delete';
+                $editGate      = $row->id != 1 ? 'user_edit' : false;
+                $deleteGate    = $row->id != 1 ? 'user_delete' : false;
                 $crudRoutePart = 'users';
 
                 return view('partials.datatablesActions', compact(
@@ -51,12 +58,15 @@ class UsersController extends Controller
                 return $row->email ? $row->email : '';
             });
             $table->editColumn('approved', function ($row) {
-                return '<input type="checkbox" disabled ' . ($row->approved ? 'checked' : null) . '>';
+                return $row->id != 1 ?'<label class="c-switch c-switch-pill c-switch-success">
+                            <input onchange="update_statuses(this,\'approved\')" value="'. $row->id .'" type="checkbox" class="c-switch-input" '. ($row->approved ? "checked" : null) .' >
+                            <span class="c-switch-slider"></span>
+                        </label>' : '';
             });
             $table->editColumn('roles', function ($row) {
                 $labels = [];
                 foreach ($row->roles as $role) {
-                    $labels[] = sprintf('<span class="label label-info label-many">%s</span>', $role->title);
+                    $labels[] = sprintf('<span class="badge badge-info badge-many">%s</span>', $role->title);
                 }
 
                 return implode(' ', $labels);
@@ -100,8 +110,10 @@ class UsersController extends Controller
 
     public function update(UpdateUserRequest $request, User $user)
     {
-        $user->update($request->all());
-        $user->roles()->sync($request->input('roles', []));
+        if($user->id != 1){
+            $user->update($request->all());
+            $user->roles()->sync($request->input('roles', []));
+        }
 
         return redirect()->route('admin.users.index');
     }
@@ -129,7 +141,9 @@ class UsersController extends Controller
         $users = User::find(request('ids'));
 
         foreach ($users as $user) {
-            $user->delete();
+            if($user->id != 1){
+                $user->delete();
+            }
         }
 
         return response(null, Response::HTTP_NO_CONTENT);

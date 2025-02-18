@@ -73,6 +73,12 @@ class StoresController extends Controller
                 return $row->user ? $row->user->name : '';
             });
 
+            $table->editColumn('user_approved', function ($row) {
+                return '<label class="c-switch c-switch-pill c-switch-success">
+                            <input onchange="update_statuses(this,\'approved\')" value="'. $row->user_id .'" type="checkbox" class="c-switch-input" '. ($row->user->approved ? "checked" : null) .' >
+                            <span class="c-switch-slider"></span>
+                        </label>' ;
+            });
             $table->editColumn('specializations', function ($row) {
                 $labels = [];
                 foreach ($row->specializations as $specialization) {
@@ -82,7 +88,7 @@ class StoresController extends Controller
                 return implode(' ', $labels);
             });
 
-            $table->rawColumns(['actions', 'placeholder', 'logo', 'user', 'specializations']);
+            $table->rawColumns(['actions', 'placeholder', 'logo', 'user','user_approved', 'specializations']);
 
             return $table->make(true);
         }
@@ -92,18 +98,32 @@ class StoresController extends Controller
 
     public function create()
     {
-        abort_if(Gate::denies('store_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-        $users = User::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        abort_if(Gate::denies('store_create'), Response::HTTP_FORBIDDEN, '403 Forbidden'); 
 
         $specializations = PetType::pluck('name', 'id');
 
-        return view('admin.stores.create', compact('specializations', 'users'));
+        return view('admin.stores.create', compact('specializations'));
     }
 
     public function store(StoreStoreRequest $request)
     {
-        $store = Store::create($request->all());
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'password' => $request->password,
+            'approved' => 1,
+            'user_type' => 'store',    
+            'identity_num' => $request->identity_num, 
+            'user_position' => $request->user_position,
+        ]);
+        $store = Store::create([
+            'user_id' => $user->id,
+            'store_name' => $request->store_name,
+            'store_phone' => $request->store_phone,
+            'address' => $request->address,   
+            'domain' => $request->domain, 
+        ]);  
         $store->specializations()->sync($request->input('specializations', []));
         if ($request->input('logo', false)) {
             $store->addMedia(storage_path('tmp/uploads/' . basename($request->input('logo'))))->toMediaCollection('logo');
@@ -111,6 +131,10 @@ class StoresController extends Controller
 
         if ($request->input('cover', false)) {
             $store->addMedia(storage_path('tmp/uploads/' . basename($request->input('cover'))))->toMediaCollection('cover');
+        } 
+
+        if ($request->input('commercial_register_photo', false)) {
+            $store->addMedia(storage_path('tmp/uploads/' . basename($request->input('commercial_register_photo'))))->toMediaCollection('commercial_register_photo');
         }
 
         if ($media = $request->input('ck-media', false)) {
@@ -122,20 +146,34 @@ class StoresController extends Controller
 
     public function edit(Store $store)
     {
-        abort_if(Gate::denies('store_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-        $users = User::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        abort_if(Gate::denies('store_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden'); 
 
         $specializations = PetType::pluck('name', 'id');
 
         $store->load('user', 'specializations');
 
-        return view('admin.stores.edit', compact('specializations', 'store', 'users'));
+        $user = $store->user;
+
+        return view('admin.stores.edit', compact('specializations', 'store', 'user'));
     }
 
     public function update(UpdateStoreRequest $request, Store $store)
     {
-        $store->update($request->all());
+        $user = $store->user; 
+        $user->update([ 
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'password' => $request->password, 
+            'identity_num' => $request->identity_num, 
+            'user_position' => $request->user_position,
+        ]); 
+        $store->update([ 
+            'store_name' => $request->store_name,
+            'store_phone' => $request->store_phone,
+            'address' => $request->address,   
+            'domain' => $request->domain, 
+        ]); 
         $store->specializations()->sync($request->input('specializations', []));
         if ($request->input('logo', false)) {
             if (! $store->logo || $request->input('logo') !== $store->logo->file_name) {
@@ -159,6 +197,17 @@ class StoresController extends Controller
             $store->cover->delete();
         }
 
+        if ($request->input('commercial_register_photo', false)) {
+            if (! $store->commercial_register_photo || $request->input('commercial_register_photo') !== $store->commercial_register_photo->file_name) {
+                if ($store->commercial_register_photo) {
+                    $store->commercial_register_photo->delete();
+                }
+                $store->addMedia(storage_path('tmp/uploads/' . basename($request->input('commercial_register_photo'))))->toMediaCollection('commercial_register_photo');
+            }
+        } elseif ($store->commercial_register_photo) {
+            $store->commercial_register_photo->delete();
+        }
+
         return redirect()->route('admin.stores.index');
     }
 
@@ -168,7 +217,9 @@ class StoresController extends Controller
 
         $store->load('user', 'specializations', 'storeProducts');
 
-        return view('admin.stores.show', compact('store'));
+        $user = $store->user;
+
+        return view('admin.stores.show', compact('store','user'));
     }
 
     public function destroy(Store $store)

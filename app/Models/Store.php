@@ -20,6 +20,7 @@ class Store extends Model implements HasMedia
     protected $appends = [
         'logo',
         'cover',
+        'commercial_register_photo',
     ];
 
     protected $dates = [
@@ -79,6 +80,11 @@ class Store extends Model implements HasMedia
         return $file;
     }
 
+    public function getCommercialRegisterPhotoAttribute()
+    {
+        return $this->getMedia('commercial_register_photo')->last();
+    }
+    
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');

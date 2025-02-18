@@ -33,23 +33,15 @@ class StoreProductRequest extends FormRequest
             'video_link' => [
                 'string',
                 'nullable',
-            ],
-            'tags' => [
-                'string',
-                'nullable',
-            ],
+            ], 
             'affiliation_link' => [
                 'string',
-                'nullable',
+                'required',
             ],
             'meta_title' => [
                 'string',
                 'nullable',
-            ],
-            'slug' => [
-                'string',
-                'required',
-            ],
+            ], 
         ];
     }
 }

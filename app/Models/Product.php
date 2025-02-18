@@ -55,8 +55,8 @@ class Product extends Model implements HasMedia
         'category_id',
         'slug',
         'rating',
-        'user_id',
-        'store_id',
+        'user_id', // user that add the product
+        'store_id', // owner of the product
         'created_at',
         'updated_at',
         'deleted_at',
