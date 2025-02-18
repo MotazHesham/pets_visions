@@ -52,6 +52,12 @@ class PetCompanionsController extends Controller
             $table->addColumn('user_name', function ($row) {
                 return $row->user ? $row->user->name : '';
             });
+            $table->editColumn('user_approved', function ($row) {
+                return '<label class="c-switch c-switch-pill c-switch-success">
+                            <input onchange="update_statuses(this,\'approved\')" value="'. $row->user_id .'" type="checkbox" class="c-switch-input" '. ($row->user->approved ? "checked" : null) .' >
+                            <span class="c-switch-slider"></span>
+                        </label>' ;
+            });
 
             $table->editColumn('specializations', function ($row) {
                 $labels = [];
@@ -76,7 +82,7 @@ class PetCompanionsController extends Controller
                 return $row->affiliation_link ? $row->affiliation_link : '';
             });
 
-            $table->rawColumns(['actions', 'placeholder', 'user', 'specializations', 'photo']);
+            $table->rawColumns(['actions', 'placeholder', 'user', 'specializations', 'photo','user_approved']);
 
             return $table->make(true);
         }
@@ -86,18 +92,30 @@ class PetCompanionsController extends Controller
 
     public function create()
     {
-        abort_if(Gate::denies('pet_companion_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-        $users = User::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        abort_if(Gate::denies('pet_companion_create'), Response::HTTP_FORBIDDEN, '403 Forbidden'); 
 
         $specializations = PetType::pluck('name', 'id');
 
-        return view('admin.petCompanions.create', compact('specializations', 'users'));
+        return view('admin.petCompanions.create', compact('specializations'));
     }
 
     public function store(StorePetCompanionRequest $request)
-    {
-        $petCompanion = PetCompanion::create($request->all());
+    { 
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'password' => $request->password,
+            'approved' => 1,
+            'user_type' => 'pet_companion',
+            'identity_num' => $request->identity_num,  
+        ]);
+        $petCompanion = PetCompanion::create([ 
+            'user_id' => $user->id,
+            'nationality' => $request->nationality,
+            'experience' => $request->experience,
+            'affiliation_link' => $request->affiliation_link, 
+        ]);
         $petCompanion->specializations()->sync($request->input('specializations', []));
         if ($request->input('photo', false)) {
             $petCompanion->addMedia(storage_path('tmp/uploads/' . basename($request->input('photo'))))->toMediaCollection('photo');
@@ -112,20 +130,33 @@ class PetCompanionsController extends Controller
 
     public function edit(PetCompanion $petCompanion)
     {
-        abort_if(Gate::denies('pet_companion_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-        $users = User::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        abort_if(Gate::denies('pet_companion_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden'); 
 
         $specializations = PetType::pluck('name', 'id');
 
         $petCompanion->load('user', 'specializations');
 
-        return view('admin.petCompanions.edit', compact('petCompanion', 'specializations', 'users'));
+        $user = $petCompanion->user;
+
+        return view('admin.petCompanions.edit', compact('petCompanion', 'specializations', 'user'));
     }
 
     public function update(UpdatePetCompanionRequest $request, PetCompanion $petCompanion)
     {
-        $petCompanion->update($request->all());
+        $user = $petCompanion->user;
+        $petCompanion->update([  
+            'nationality' => $request->nationality,
+            'experience' => $request->experience,
+            'affiliation_link' => $request->affiliation_link, 
+        ]);
+        $user->update([  
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'password' => $request->password, 
+            'identity_num' => $request->identity_num,  
+        ]);
+        
         $petCompanion->specializations()->sync($request->input('specializations', []));
         if ($request->input('photo', false)) {
             if (! $petCompanion->photo || $request->input('photo') !== $petCompanion->photo->file_name) {
@@ -147,7 +178,9 @@ class PetCompanionsController extends Controller
 
         $petCompanion->load('user', 'specializations', 'petCompanionPetCompanionReviews');
 
-        return view('admin.petCompanions.show', compact('petCompanion'));
+        $user = $petCompanion->user;
+
+        return view('admin.petCompanions.show', compact('petCompanion','user'));
     }
 
     public function destroy(PetCompanion $petCompanion)

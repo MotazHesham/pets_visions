@@ -37,6 +37,9 @@
                             {{ trans('cruds.petCompanion.fields.affiliation_link') }}
                         </th>
                         <th>
+                            {{ trans('cruds.user.fields.approved') }}
+                        </th>
+                        <th>
                             &nbsp;
                         </th>
                     </tr>
@@ -138,6 +141,10 @@
                     {
                         data: 'affiliation_link',
                         name: 'affiliation_link'
+                    },
+                    {
+                        data: 'user_approved',
+                        name: 'user.approved'
                     },
                     {
                         data: 'actions',

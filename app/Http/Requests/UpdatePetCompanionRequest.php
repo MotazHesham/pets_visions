@@ -17,6 +17,22 @@ class UpdatePetCompanionRequest extends FormRequest
     public function rules()
     {
         return [
+            'name' => [
+                'string',
+                'required',
+            ],
+            'email' => [
+                'required',
+                'unique:users,email,' . request()->user_id,
+            ], 
+            'identity_num' => [
+                'string',
+                'nullable',
+            ],
+            'phone' => [
+                'string',
+                'nullable',
+            ], 
             'specializations.*' => [
                 'integer',
             ],

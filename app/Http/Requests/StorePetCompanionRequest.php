@@ -17,6 +17,25 @@ class StorePetCompanionRequest extends FormRequest
     public function rules()
     {
         return [
+            'name' => [
+                'string',
+                'required',
+            ],
+            'email' => [
+                'required',
+                'unique:users',
+            ],
+            'password' => [
+                'required',
+            ], 
+            'identity_num' => [
+                'string',
+                'nullable',
+            ],
+            'phone' => [
+                'string',
+                'nullable',
+            ], 
             'specializations.*' => [
                 'integer',
             ],
