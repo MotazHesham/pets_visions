@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\MassDestroyAdoptionRequestRequest;
 use App\Http\Requests\StoreAdoptionRequestRequest;
 use App\Http\Requests\UpdateAdoptionRequestRequest;
+use App\Models\AdoptionPet;
 use App\Models\AdoptionRequest;
 use Gate;
 use Illuminate\Http\Request;
@@ -19,7 +20,7 @@ class AdoptionRequestsController extends Controller
         abort_if(Gate::denies('adoption_request_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         if ($request->ajax()) {
-            $query = AdoptionRequest::query()->select(sprintf('%s.*', (new AdoptionRequest)->table));
+            $query = AdoptionRequest::with(['adoption_pet'])->select(sprintf('%s.*', (new AdoptionRequest)->table));
             $table = Datatables::of($query);
 
             $table->addColumn('placeholder', '&nbsp;');
@@ -64,8 +65,11 @@ class AdoptionRequestsController extends Controller
             $table->editColumn('address', function ($row) {
                 return $row->address ? $row->address : '';
             });
+            $table->addColumn('adoption_pet_name', function ($row) {
+                return $row->adoption_pet ? $row->adoption_pet->name : '';
+            });
 
-            $table->rawColumns(['actions', 'placeholder']);
+            $table->rawColumns(['actions', 'placeholder', 'adoption_pet']);
 
             return $table->make(true);
         }
@@ -77,7 +81,9 @@ class AdoptionRequestsController extends Controller
     {
         abort_if(Gate::denies('adoption_request_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return view('admin.adoptionRequests.create');
+        $adoption_pets = AdoptionPet::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+
+        return view('admin.adoptionRequests.create', compact('adoption_pets'));
     }
 
     public function store(StoreAdoptionRequestRequest $request)
@@ -91,7 +97,11 @@ class AdoptionRequestsController extends Controller
     {
         abort_if(Gate::denies('adoption_request_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return view('admin.adoptionRequests.edit', compact('adoptionRequest'));
+        $adoption_pets = AdoptionPet::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+
+        $adoptionRequest->load('adoption_pet');
+
+        return view('admin.adoptionRequests.edit', compact('adoptionRequest', 'adoption_pets'));
     }
 
     public function update(UpdateAdoptionRequestRequest $request, AdoptionRequest $adoptionRequest)
@@ -104,6 +114,8 @@ class AdoptionRequestsController extends Controller
     public function show(AdoptionRequest $adoptionRequest)
     {
         abort_if(Gate::denies('adoption_request_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        $adoptionRequest->load('adoption_pet');
 
         return view('admin.adoptionRequests.show', compact('adoptionRequest'));
     }

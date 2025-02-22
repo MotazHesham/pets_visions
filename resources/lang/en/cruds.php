@@ -551,6 +551,8 @@ return [
             'updated_at_helper' => ' ',
             'deleted_at'        => 'Deleted at',
             'deleted_at_helper' => ' ',
+            'adoption_pet'        => 'Adoption Pet',
+            'adoption_pet_helper' => ' ',
         ],
     ],
     'petCompanion' => [

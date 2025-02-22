@@ -108,7 +108,7 @@
 
                 <div class=" col-md-3 col col-sm-6">
                     <div class="services-box">
-                        <a href="{{ route('frontend.pet_companions') }}">
+                        <a href="{{ route('frontend.pet-companions') }}">
                             <div class="media">
                                 <img src="{{ asset('frontend/assets/images/services10.png') }}" />
                                 <div class="media-body">
@@ -122,7 +122,7 @@
 
                 <div class="col-md-3 col col-sm-6">
                     <div class="services-box">
-                        <a href="{{ route('frontend.stray_pets') }}">
+                        <a href="{{ route('frontend.stray-pets') }}">
                             <div class="media">
                                 <img src="{{ asset('frontend/assets/images/services04.png') }}" />
                                 <div class="media-body">
@@ -136,7 +136,7 @@
 
                 <div class="col-md-3 col col-sm-6">
                     <div class="services-box">
-                        <a href="{{ route('frontend.delivery_pets') }}">
+                        <a href="{{ route('frontend.delivery-pets') }}">
                             <div class="media">
                                 <img src="{{ asset('frontend/assets/images/services08.png') }}" />
                                 <div class="media-body">

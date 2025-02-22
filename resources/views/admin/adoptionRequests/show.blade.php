@@ -95,6 +95,14 @@
                             {{ $adoptionRequest->note }}
                         </td>
                     </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.adoptionRequest.fields.adoption_pet') }}
+                        </th>
+                        <td>
+                            {{ $adoptionRequest->adoption_pet->name ?? '' }}
+                        </td>
+                    </tr>
                 </tbody>
             </table>
             <div class="form-group">

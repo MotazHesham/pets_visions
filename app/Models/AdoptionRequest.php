@@ -42,6 +42,7 @@ class AdoptionRequest extends Model
         'address',
         'experience',
         'note',
+        'adoption_pet_id',
         'created_at',
         'updated_at',
         'deleted_at',
@@ -50,5 +51,9 @@ class AdoptionRequest extends Model
     protected function serializeDate(DateTimeInterface $date)
     {
         return $date->format('Y-m-d H:i:s');
+    }
+    public function adoption_pet()
+    {
+        return $this->belongsTo(AdoptionPet::class, 'adoption_pet_id');
     }
 }

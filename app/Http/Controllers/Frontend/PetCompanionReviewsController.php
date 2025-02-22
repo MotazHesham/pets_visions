@@ -15,79 +15,31 @@ use Symfony\Component\HttpFoundation\Response;
 
 class PetCompanionReviewsController extends Controller
 {
-    public function index()
+
+    public function index($id)
+    {  
+        $petCompanion = PetCompanion::findOrFail($id);
+        $reviews = PetCompanionReview::where('pet_companion_id',$id)->with(['pet_companion', 'user'])->paginate(12);
+
+        return view('frontend.petCompanions.review', compact('reviews','petCompanion'));
+    }  
+
+    public function store(Request $request)
     {
-        abort_if(Gate::denies('pet_companion_review_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-        $petCompanionReviews = PetCompanionReview::with(['pet_companion', 'user'])->get();
-
-        return view('frontend.petCompanionReviews.index', compact('petCompanionReviews'));
-    }
-
-    public function create()
-    {
-        abort_if(Gate::denies('pet_companion_review_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-        $pet_companions = PetCompanion::pluck('nationality', 'id')->prepend(trans('global.pleaseSelect'), '');
-
-        $users = User::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
-
-        return view('frontend.petCompanionReviews.create', compact('pet_companions', 'users'));
-    }
-
-    public function store(StorePetCompanionReviewRequest $request)
-    {
-        $petCompanionReview = PetCompanionReview::create($request->all());
-
-        return redirect()->route('frontend.pet-companion-reviews.index');
-    }
-
-    public function edit(PetCompanionReview $petCompanionReview)
-    {
-        abort_if(Gate::denies('pet_companion_review_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-        $pet_companions = PetCompanion::pluck('nationality', 'id')->prepend(trans('global.pleaseSelect'), '');
-
-        $users = User::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
-
-        $petCompanionReview->load('pet_companion', 'user');
-
-        return view('frontend.petCompanionReviews.edit', compact('petCompanionReview', 'pet_companions', 'users'));
-    }
-
-    public function update(UpdatePetCompanionReviewRequest $request, PetCompanionReview $petCompanionReview)
-    {
-        $petCompanionReview->update($request->all());
-
-        return redirect()->route('frontend.pet-companion-reviews.index');
-    }
-
-    public function show(PetCompanionReview $petCompanionReview)
-    {
-        abort_if(Gate::denies('pet_companion_review_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-        $petCompanionReview->load('pet_companion', 'user');
-
-        return view('frontend.petCompanionReviews.show', compact('petCompanionReview'));
-    }
-
-    public function destroy(PetCompanionReview $petCompanionReview)
-    {
-        abort_if(Gate::denies('pet_companion_review_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-        $petCompanionReview->delete();
-
-        return back();
-    }
-
-    public function massDestroy(MassDestroyPetCompanionReviewRequest $request)
-    {
-        $petCompanionReviews = PetCompanionReview::find(request('ids'));
-
-        foreach ($petCompanionReviews as $petCompanionReview) {
-            $petCompanionReview->delete();
+        $request->validate([
+            'rate' => 'required|numeric|between:1,5',
+            'comment' => 'required|string|max:25',
+            'name' => 'required|string|max:25',
+            'pet_companion_id' => 'required|integer|exists:pet_companions,id',
+        ]);   
+        if(auth()->check()){
+            $request->merge([
+                'user_id' => auth()->user()->id
+            ]);
         }
+        PetCompanionReview::create($request->only('rate','comment','name','pet_companion_id','user_id'));
 
-        return response(null, Response::HTTP_NO_CONTENT);
-    }
+        toast(trans('frontend.toast.success'),'success');
+        return redirect()->back(); 
+    }  
 }

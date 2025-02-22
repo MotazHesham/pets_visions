@@ -1,7 +1,7 @@
 @extends('layouts.frontend')
 
 @section('content')
-    <!--header end-->
+
     <div class="breadcrumb-main ">
         <div class="container">
             <div class="row">

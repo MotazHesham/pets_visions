@@ -554,6 +554,8 @@ return [
             'updated_at_helper' => ' ',
             'deleted_at'        => 'تم الحذف في',
             'deleted_at_helper' => ' ',
+            'adoption_pet'        => 'الحيوان الأليف',
+            'adoption_pet_helper' => ' ',
         ],
     ],
     'petCompanion' => [

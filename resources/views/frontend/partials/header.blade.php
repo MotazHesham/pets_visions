@@ -280,9 +280,9 @@
                                             <li><a href="{{ route('frontend.firstaids') }}">{{ trans('frontend.header.firstaids') }} </a></li>
                                             <li><a href="{{ route('frontend.hostings') }}">{{ trans('frontend.header.hosting') }} </a></li>
                                             <li><a href="{{ route('frontend.adoptions') }}">{{ trans('frontend.header.adoption') }}</a></li>
-                                            <li><a href="{{ route('frontend.pet_companions') }}">{{ trans('frontend.header.pet_companion') }} </a></li>
-                                            <li><a href="{{ route('frontend.stray_pets') }}">{{ trans('frontend.header.stray') }}</a></li>  
-                                            <li><a href="{{ route('frontend.delivery_pets') }}">{{ trans('frontend.header.delivery') }}</a></li> 
+                                            <li><a href="{{ route('frontend.pet-companions') }}">{{ trans('frontend.header.pet_companion') }} </a></li>
+                                            <li><a href="{{ route('frontend.stray-pets') }}">{{ trans('frontend.header.stray') }}</a></li>  
+                                            <li><a href="{{ route('frontend.delivery-pets') }}">{{ trans('frontend.header.delivery') }}</a></li> 
 
                                         </ul>
                                     </li>

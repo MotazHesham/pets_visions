@@ -111,6 +111,20 @@
                 <span class="help-block">{{ trans('cruds.adoptionRequest.fields.note_helper') }}</span>
             </div>
             <div class="form-group">
+                <label class="required" for="adoption_pet_id">{{ trans('cruds.adoptionRequest.fields.adoption_pet') }}</label>
+                <select class="form-control select2 {{ $errors->has('adoption_pet') ? 'is-invalid' : '' }}" name="adoption_pet_id" id="adoption_pet_id" required>
+                    @foreach($adoption_pets as $id => $entry)
+                        <option value="{{ $id }}" {{ (old('adoption_pet_id') ? old('adoption_pet_id') : $adoptionRequest->adoption_pet->id ?? '') == $id ? 'selected' : '' }}>{{ $entry }}</option>
+                    @endforeach
+                </select>
+                @if($errors->has('adoption_pet'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('adoption_pet') }}
+                    </div>
+                @endif
+                <span class="help-block">{{ trans('cruds.adoptionRequest.fields.adoption_pet_helper') }}</span>
+            </div>
+            <div class="form-group">
                 <button class="btn btn-danger" type="submit">
                     {{ trans('global.save') }}
                 </button>

@@ -33,6 +33,10 @@ class UpdateAdoptionRequestRequest extends FormRequest
                 'string',
                 'nullable',
             ],
+            'adoption_pet_id' => [
+                'required',
+                'integer',
+            ],
         ];
     }
 }
