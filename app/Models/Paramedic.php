@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\Auditable;
+use Carbon\Carbon;
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -31,6 +32,12 @@ class Paramedic extends Model
         'deleted_at',
     ];
 
+    public function getIsActiveAttribute()
+    {
+        $now = Carbon::now();
+        return $now->between(Carbon::parse($this->from_time), Carbon::parse($this->to_time));
+    }
+    
     protected function serializeDate(DateTimeInterface $date)
     {
         return $date->format('Y-m-d H:i:s');

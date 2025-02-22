@@ -32,6 +32,7 @@ class PetCompanion extends Model implements HasMedia
         'nationality',
         'experience',
         'affiliation_link',
+        'rating',
         'created_at',
         'updated_at',
         'deleted_at',

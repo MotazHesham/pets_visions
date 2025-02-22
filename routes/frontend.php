@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\Frontend\ClinicReviewsController;
 use App\Http\Controllers\Frontend\ClinicsController;
+use App\Http\Controllers\Frontend\ClinicServicesController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\ProductController;
 use App\Http\Controllers\Frontend\ProductReviewsController;
@@ -22,6 +24,13 @@ Route::group(['as' => 'frontend.'], function () {
     // Clinics
     Route::get('clinics', [ClinicsController::class,'clinics'])->name('clinics');
     Route::get('clinics/{id}', [ClinicsController::class,'show'])->name('clinics.show');
+
+    // ClinicServices 
+    Route::get('clinic.services/{id}', [ClinicServicesController::class,'show'])->name('clinic-services.show');
+
+    // ClinicReviews
+    Route::get('clinic-reviews/{id}', [ClinicReviewsController::class,'index'])->name('clinic-reviews');
+    Route::post('clinic-reviews/store',[ClinicReviewsController::class, 'store'])->name('clinic-reviews.store');
 
     // Shops
     Route::get('shops', [ShopController::class,'shops'])->name('shops');

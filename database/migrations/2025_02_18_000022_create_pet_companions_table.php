@@ -13,6 +13,7 @@ class CreatePetCompanionsTable extends Migration
             $table->string('nationality')->nullable();
             $table->longText('experience')->nullable();
             $table->string('affiliation_link');
+            $table->float('rating', 4, 2)->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

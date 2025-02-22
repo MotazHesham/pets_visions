@@ -43,6 +43,7 @@ class Hosting extends Model implements HasMedia
         'hosting_type',
         'address',
         'about_us',
+        'rating',
         'short_description',
         'affiliation_link',
         'created_at',
@@ -117,6 +118,11 @@ class Hosting extends Model implements HasMedia
     public function hosting_services()
     {
         return $this->belongsToMany(HostingService::class);
+    }
+
+    public function hostingHostingReviews()
+    {
+        return $this->hasMany(HostingReview::class, 'hosting_id', 'id');
     }
 
     public function getCommercialRegisterPhotoAttribute()

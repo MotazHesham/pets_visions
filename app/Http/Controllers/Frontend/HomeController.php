@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Models\Clinic;
+use App\Models\Paramedic;
 use App\Models\PetType;
 use App\Models\ProductCategory;
 use App\Models\Slider;
@@ -16,5 +17,10 @@ class HomeController
         $categories = ProductCategory::orderBy('created_at','desc')->take(5)->get(); 
         $clinics = Clinic::orderBy('created_at','desc')->take(12)->get();
         return view("frontend.home",compact("sliders","types","categories","clinics"));
+    }
+
+    public function firstaids(){
+        $paramedics = Paramedic::where('active',1)->get();
+        return view("frontend.firstaids",compact('paramedics'));
     }
 }

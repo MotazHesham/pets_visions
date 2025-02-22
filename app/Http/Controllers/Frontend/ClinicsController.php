@@ -16,4 +16,9 @@ class ClinicsController extends Controller
         $clinics = $clinics->paginate(8);
         return view('frontend.clinics.clinics', compact('clinics'));
     }
+    
+    public function show($id){
+        $clinic = Clinic::findOrFail($id);
+        return view('frontend.clinics.show', compact('clinic'));
+    }
 }

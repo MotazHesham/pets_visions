@@ -17,6 +17,7 @@ class CreateHostingsTable extends Migration
             $table->longText('about_us')->nullable();
             $table->longText('short_description')->nullable();
             $table->string('affiliation_link');
+            $table->float('rating', 4, 2)->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
