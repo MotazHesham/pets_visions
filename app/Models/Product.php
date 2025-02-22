@@ -92,14 +92,14 @@ class Product extends Model implements HasMedia
 
     public function getPhotosAttribute()
     {
-        $file = $this->getMedia('photos')->last();
-        if ($file) {
-            $file->url       = $file->getUrl();
-            $file->thumbnail = $file->getUrl('thumb');
-            $file->preview   = $file->getUrl('preview');
-        }
+        $files = $this->getMedia('photos');
+        $files->each(function ($item) {
+            $item->url       = $item->getUrl();
+            $item->thumbnail = $item->getUrl('thumb');
+            $item->preview   = $item->getUrl('preview');
+        });
 
-        return $file;
+        return $files;
     }
 
     public function category()
@@ -115,5 +115,9 @@ class Product extends Model implements HasMedia
     public function store()
     {
         return $this->belongsTo(Store::class, 'store_id');
+    }
+
+    public function nonSpaceName(){
+        return str_replace(' ', '_', $this->name);
     }
 }

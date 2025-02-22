@@ -67,6 +67,9 @@ class ProductController extends Controller
             $table->editColumn('price', function ($row) {
                 return $row->price ? $row->price : '';
             });
+            $table->editColumn('show_in_website', function ($row) {
+                return '<a href="'.route('frontend.products.show',['slug' => $row->slug, 'name' => $row->nonSpaceName()]).'">' . trans('global.show') . '</a>';
+            });
             $table->editColumn('main_photo', function ($row) {
                 if ($photo = $row->main_photo) {
                     return sprintf(
@@ -105,7 +108,7 @@ class ProductController extends Controller
                 return $row->store ? $row->store->store_name : '';
             });
 
-            $table->rawColumns(['actions', 'placeholder', 'main_photo', 'published', 'featured', 'category', 'user', 'store']);
+            $table->rawColumns(['actions', 'placeholder', 'main_photo', 'published', 'featured', 'category', 'user', 'store','show_in_website']);
 
             return $table->make(true);
         }
@@ -139,8 +142,8 @@ class ProductController extends Controller
             $product->addMedia(storage_path('tmp/uploads/' . basename($request->input('main_photo'))))->toMediaCollection('main_photo');
         }
 
-        if ($request->input('photos', false)) {
-            $product->addMedia(storage_path('tmp/uploads/' . basename($request->input('photos'))))->toMediaCollection('photos');
+        foreach ($request->input('photos', []) as $file) {
+            $product->addMedia(storage_path('tmp/uploads/' . basename($file)))->toMediaCollection('photos');
         }
 
         if ($media = $request->input('ck-media', false)) {
@@ -182,15 +185,18 @@ class ProductController extends Controller
             $product->main_photo->delete();
         }
 
-        if ($request->input('photos', false)) {
-            if (! $product->photos || $request->input('photos') !== $product->photos->file_name) {
-                if ($product->photos) {
-                    $product->photos->delete();
+        if (count($product->photos) > 0) {
+            foreach ($product->photos as $media) {
+                if (! in_array($media->file_name, $request->input('photos', []))) {
+                    $media->delete();
                 }
-                $product->addMedia(storage_path('tmp/uploads/' . basename($request->input('photos'))))->toMediaCollection('photos');
             }
-        } elseif ($product->photos) {
-            $product->photos->delete();
+        }
+        $media = $product->photos->pluck('file_name')->toArray();
+        foreach ($request->input('photos', []) as $file) {
+            if (count($media) === 0 || ! in_array($file, $media)) {
+                $product->addMedia(storage_path('tmp/uploads/' . basename($file)))->toMediaCollection('photos');
+            }
         }
 
         return redirect()->route('admin.products.index');

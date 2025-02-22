@@ -1,16 +1,16 @@
 <div>
     <div class="digipro-box mt-1">
         <div class="img-wrraper">
-            <a href="{{ route('frontend.products.show',$product->slug) }}"> 
+            <a href="{{ route('frontend.products.show',['slug' => $product->slug, 'name' => $product->nonSpaceName()]) }}"> 
                 <img src="{{ $product->main_photo ? $product->main_photo->getUrl() : '' }}" 
                     onerror="this.onerror=null;this.src='{{ asset('no-image.png') }}';" alt="product" class="img-fluid">
             </a>
         </div>
         <div class="product-detail">
-            <a href="{{ route('frontend.products.show',$product->slug) }}">
+            <a href="{{ route('frontend.products.show',['slug' => $product->slug, 'name' => $product->nonSpaceName()]) }}">
                 <h4>{{ $product->name }}</h4>
             </a>
-            <a href="{{ route('frontend.products.show',$product->slug) }}">
+            <a href="{{ route('frontend.products.show',['slug' => $product->slug, 'name' => $product->nonSpaceName()]) }}">
                 <h5> {{ $product->description }}</h5>
             </a>
             <div class="sale-box">
@@ -25,7 +25,7 @@
                 </div>
             </div>
             <div class="pro-btn">
-                <a href="{{ route('frontend.products.show',$product->slug) }}" class="btn btn-normal btn-sm">
+                <a href="{{ route('frontend.products.show',['slug' => $product->slug, 'name' => $product->nonSpaceName()]) }}" class="btn btn-normal btn-sm">
                     المزيد 
                 </a>
                 {{-- <a href="javascript:void(0)"

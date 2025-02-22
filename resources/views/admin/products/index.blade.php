@@ -37,7 +37,7 @@
                             {{ trans('cruds.product.fields.main_photo') }}
                         </th>
                         <th>
-                            {{ trans('cruds.product.fields.tags') }}
+                            {{ trans('cruds.product.extra.show_in_website') }}
                         </th>
                         <th>
                             {{ trans('cruds.product.fields.published') }}
@@ -157,8 +157,10 @@
                         searchable: false
                     },
                     {
-                        data: 'tags',
-                        name: 'tags'
+                        data: 'show_in_website',
+                        name: 'show_in_website',
+                        sortable: false,
+                        searchable: false
                     },
                     {
                         data: 'published',

@@ -5,7 +5,8 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\MediaUploadingTrait; 
 use App\Models\Product;
-use App\Models\ProductCategory; 
+use App\Models\ProductCategory;
+use App\Models\ProductReview;
 
 class ProductController extends Controller
 {
@@ -49,6 +50,16 @@ class ProductController extends Controller
 
     public function show($slug){
         $product = Product::where('slug',$slug)->firstOrFail();
-        return view('frontend.shops.product',compact('product'));
+        $newProducts = Product::where('id','!=',$product->id)
+                                ->select('id','slug','rating','name','price')
+                                ->orderBy('created_at','desc')
+                                ->take(12)->get()->chunk(4); 
+        $similarProducts = Product::where('id','!=',$product->id) 
+                                ->with('store')
+                                ->where('category_id',$product->category_id)
+                                ->orderBy('created_at','desc')
+                                ->take(12)->get(); 
+        $reviews = ProductReview::where('product_id',$product->id)->orderBy('created_at','asc')->take(30)->get();
+        return view('frontend.shops.product',compact('product','newProducts','similarProducts','reviews'));
     }
 }

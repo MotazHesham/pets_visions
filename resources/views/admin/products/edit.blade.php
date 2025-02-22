@@ -345,11 +345,11 @@
         }
     </script>
     <script>
+        var uploadedPhotosMap = {}
         Dropzone.options.photosDropzone = {
             url: '{{ route('admin.products.storeMedia') }}',
             maxFilesize: 4, // MB
             acceptedFiles: '.jpeg,.jpg,.png,.gif',
-            maxFiles: 1,
             addRemoveLinks: true,
             headers: {
                 'X-CSRF-TOKEN': "{{ csrf_token() }}"
@@ -360,24 +360,30 @@
                 height: 4096
             },
             success: function(file, response) {
-                $('form').find('input[name="photos"]').remove()
-                $('form').append('<input type="hidden" name="photos" value="' + response.name + '">')
+                $('form').append('<input type="hidden" name="photos[]" value="' + response.name + '">')
+                uploadedPhotosMap[file.name] = response.name
             },
             removedfile: function(file) {
+                console.log(file)
                 file.previewElement.remove()
-                if (file.status !== 'error') {
-                    $('form').find('input[name="photos"]').remove()
-                    this.options.maxFiles = this.options.maxFiles + 1
+                var name = ''
+                if (typeof file.file_name !== 'undefined') {
+                    name = file.file_name
+                } else {
+                    name = uploadedPhotosMap[file.name]
                 }
+                $('form').find('input[name="photos[]"][value="' + name + '"]').remove()
             },
             init: function() {
                 @if (isset($product) && $product->photos)
-                    var file = {!! json_encode($product->photos) !!}
-                    this.options.addedfile.call(this, file)
-                    this.options.thumbnail.call(this, file, file.preview ?? file.preview_url)
-                    file.previewElement.classList.add('dz-complete')
-                    $('form').append('<input type="hidden" name="photos" value="' + file.file_name + '">')
-                    this.options.maxFiles = this.options.maxFiles - 1
+                    var files = {!! json_encode($product->photos) !!}
+                    for (var i in files) {
+                        var file = files[i]
+                        this.options.addedfile.call(this, file)
+                        this.options.thumbnail.call(this, file, file.preview ?? file.preview_url)
+                        file.previewElement.classList.add('dz-complete')
+                        $('form').append('<input type="hidden" name="photos[]" value="' + file.file_name + '">')
+                    }
                 @endif
             },
             error: function(file, response) {

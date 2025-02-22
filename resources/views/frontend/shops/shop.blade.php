@@ -95,7 +95,7 @@
                                                 <div class="row">
                                                     @foreach ($products as $product)
                                                         <div class="col-md-4">
-                                                            @include('frontend.partials.product', [
+                                                            @include('frontend.partials.product-box', [
                                                                 'product' => $product,
                                                             ])
                                                         </div>

@@ -172,6 +172,9 @@ return [
     'product' => [
         'title'          => 'المنتجات',
         'title_singular' => 'منتج',
+        'extra' => [
+            'show_in_website' => 'عرض في الموقع'
+        ],
         'fields'         => [
             'id'                      => 'id',
             'id_helper'               => ' ',

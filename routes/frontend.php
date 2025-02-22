@@ -3,6 +3,7 @@
 use App\Http\Controllers\Frontend\ClinicsController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\ProductController;
+use App\Http\Controllers\Frontend\ProductReviewsController;
 use App\Http\Controllers\Frontend\ShopController;
 use App\Http\Controllers\Frontend\SubscriptionsController;
 use Illuminate\Support\Facades\Route;
@@ -28,7 +29,10 @@ Route::group(['as' => 'frontend.'], function () {
 
     // Products
     Route::get('products/search', [ProductController::class,'search'])->name('products.search'); 
-    Route::get('products/{slug}', [ProductController::class,'show'])->name('products.show'); 
+    Route::get('products/{slug}/{name?}', [ProductController::class,'show'])->name('products.show'); 
+
+    // ProductReview
+    Route::post('product-reviews/store',[ProductReviewsController::class, 'store'])->name('product-reviews.store');
 
     // Subscriptions
     Route::post('subscriptions/store', [SubscriptionsController::class,'store'])->name('subscriptions.store');
