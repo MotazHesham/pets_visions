@@ -10,6 +10,7 @@ class CreateStrayPetsTable extends Migration
     {
         Schema::create('stray_pets', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('type');
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
             $table->string('email')->nullable();

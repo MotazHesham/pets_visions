@@ -13,6 +13,7 @@ use App\Http\Controllers\Frontend\PetCompanionsController;
 use App\Http\Controllers\Frontend\ProductController;
 use App\Http\Controllers\Frontend\ProductReviewsController;
 use App\Http\Controllers\Frontend\ShopController;
+use App\Http\Controllers\Frontend\StrayPetsController;
 use App\Http\Controllers\Frontend\SubscriptionsController;
 use Illuminate\Support\Facades\Route;
 
@@ -21,7 +22,6 @@ Route::group(['as' => 'frontend.'], function () {
     Route::get('about', [HomeController::class,'about'])->name('about');
 
     Route::get('firstaids', [HomeController::class,'firstaids'])->name('firstaids');
-    Route::get('stray_pets', [HomeController::class,'stray_pets'])->name('stray-pets');
     Route::get('delivery_pets', [HomeController::class,'delivery_pets'])->name('delivery-pets');
 
     // Shops
@@ -69,6 +69,10 @@ Route::group(['as' => 'frontend.'], function () {
     Route::get('pet-companion-reviews/{id}', [PetCompanionReviewsController::class,'index'])->name('pet-companion-reviews');
     Route::post('pet-companion-reviews/store',[PetCompanionReviewsController::class, 'store'])->name('pet-companion-reviews.store');
 
+    // strayPets
+    Route::get('stray-pets', [StrayPetsController::class,'stray_pets'])->name('stray-pets');
+    Route::get('stray-pets/create/{type}', [StrayPetsController::class,'create'])->name('stray-pets.create');
+    Route::post('stray-pets/store', [StrayPetsController::class,'store'])->name('stray-pets.store');
 
     // Subscriptions
     Route::post('subscriptions/store', [SubscriptionsController::class,'store'])->name('subscriptions.store');

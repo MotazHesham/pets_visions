@@ -44,6 +44,8 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('frontend/assets/css/color7.css') }}" media="screen"
         id="color">
 
+    <link rel="stylesheet" href="{{ asset('dashboard_offline/css/bootstrap-datetimepicker.min.css') }}">
+
     <script src="https://code.jquery.com/jquery.js"></script>
 
     <script src="{{ asset('frontend/src/skdslider.min.js') }}"></script>
@@ -81,243 +83,11 @@
     <!-- loader end -->
 
     @include('frontend.partials.header')
-    
+
     @yield('content')
-    
+
     @include('frontend.partials.footer')
 
-    <!-- Quick-view modal popup start-->
-    {{-- <div class="modal fade bd-example-modal-lg theme-modal" id="quick-view" tabindex="-1" role="dialog"
-        aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-            <div class="modal-content quick-view-modal">
-                <div class="modal-body">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    <div class="row">
-                        <div class="col-lg-6 col-xs-12">
-                            <div class="quick-view-img">
-                                <img src="assets/images/pngegg-12-1-PZu.png" alt="" class="img-fluid bg-img">
-                            </div>
-                        </div>
-                        <div class="col-lg-6 rtl-text">
-                            <div class="product-right">
-                                <div class="pro-group">
-                                    <h2>
-                                        بي ديجري - فيتل طعام جاف للكلاب
-                                    </h2>
-                                    <ul class="pro-price">
-                                        <li>رس140</li>
-                                        <li><span>رس140 </span></li>
-                                        <li>50% خصم</li>
-                                    </ul>
-                                    <div class="revieu-box">
-                                        <ul>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star-o"></i></li>
-                                        </ul>
-                                        <a href="review.html"><span>(6 تعليقات)</span></a>
-                                    </div>
-
-                                </div>
-                                <div class="pro-group">
-                                    <h6 class="product-title">بيانات المنتج</h6>
-                                    <p>هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد
-                                        النص العربى، حيث يمكنك أن تولد مثل هذا النص أو العديد من النصوص الأخرى إضافة إلى
-                                        زيادة عدد الحروف التى يولدها التطبيق.</p>
-                                </div>
-                                <div class="pro-group pb-0">
-
-                                    <div class="modal fade" id="sizemodal" tabindex="-1" role="dialog"
-                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLabel">Sheer Straight
-                                                        Kurta</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                        aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body"><img src="assets/images/size-chart.jpg"
-                                                        alt="" class="img-fluid "></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="size-box">
-                                        <ul>
-                                            <li><a href="javascript:void(0)"> 1/2 كيلو</a></li>
-                                            <li><a href="javascript:void(0)">1 كيلو</a></li>
-                                            <li><a href="javascript:void(0)">2 كيلو</a></li>
-
-                                        </ul>
-                                    </div>
-
-                                    <h6 class="product-title">العدد</h6>
-                                    <div class="qty-box">
-                                        <div class="input-group">
-                                            <button class="qty-minus"></button>
-                                            <input class="qty-adj form-control" type="number" value="1">
-                                            <button class="qty-plus"></button>
-                                        </div>
-                                    </div>
-                                    <div class="product-buttons">
-                                        <a href="javascript:void(0)" onclick="openCart()"
-                                            class="btn cart-btn btn-normal tooltip-top"
-                                            data-tippy-content="أضف الى السلة">
-                                            <i class="fa fa-shopping-cart"></i>
-                                            أضف الى السلة
-                                        </a>
-                                        <a href="single_products.html" class="btn btn-normal tooltip-top"
-                                            data-tippy-content="view detail">
-                                            المزيد
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> --}}
-    <!-- Quick-view modal popup end-->
-
-    <!-- Add to cart bar -->
-    {{-- <div id="cart_side" class="add_to_cart right ">
-        <a href="javascript:void(0)" class="overlay" onclick="closeCart()"></a>
-        <div class="cart-inner">
-            <div class="cart_top">
-                <h3>سلة التسوق</h3>
-                <div class="close-cart">
-                    <a href="javascript:void(0)" onclick="closeCart()">
-                        <i class="fa fa-times" aria-hidden="true"></i>
-                    </a>
-                </div>
-            </div>
-            <div class="cart_media">
-                <ul class="cart_product">
-                    <li>
-                        <div class="media">
-                            <a href="product-page(left-sidebar).html">
-                                <img alt="megastore1" class="me-3" src="assets/images/pro01.png">
-                            </a>
-                            <div class="media-body">
-                                <a href="product-page(left-sidebar).html">
-                                    <h4>بي ديجري - فيتل طعام جاف للكلاب</h4>
-                                </a>
-                                <h6>
-                                    19.99س.ر<span>56.99 س.ر</span>
-                                </h6>
-                                <div class="addit-box">
-                                    <div class="qty-box">
-                                        <div class="input-group">
-                                            <button class="qty-minus"></button>
-                                            <input class="qty-adj form-control" type="number" value="1" />
-                                            <button class="qty-plus"></button>
-                                        </div>
-                                    </div>
-                                    <div class="pro-add">
-                                        <a href="javascript:void(0)" data-bs-toggle="modal"
-                                            data-bs-target="#edit-product">
-                                            <i data-feather="edit"></i>
-                                        </a>
-                                        <a href="javascript:void(0)">
-                                            <i data-feather="trash-2"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-
-                    <li>
-                        <div class="media">
-                            <a href="product-page(left-sidebar).html">
-                                <img alt="megastore1" class="me-3" src="assets/images/pro01.png">
-                            </a>
-                            <div class="media-body">
-                                <a href="product-page(left-sidebar).html">
-                                    <h4>بي ديجري - فيتل طعام جاف للكلاب</h4>
-                                </a>
-                                <h6>
-                                    19.99س.ر<span>56.99 س.ر</span>
-                                </h6>
-                                <div class="addit-box">
-                                    <div class="qty-box">
-                                        <div class="input-group">
-                                            <button class="qty-minus"></button>
-                                            <input class="qty-adj form-control" type="number" value="1" />
-                                            <button class="qty-plus"></button>
-                                        </div>
-                                    </div>
-                                    <div class="pro-add">
-
-                                        <a href="javascript:void(0)">
-                                            <i data-feather="trash-2"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-
-                    <li>
-                        <div class="media">
-                            <a href="product-page(left-sidebar).html">
-                                <img alt="megastore1" class="me-3" src="assets/images/pro01.png">
-                            </a>
-                            <div class="media-body">
-                                <a href="product-page(left-sidebar).html">
-                                    <h4>بي ديجري - فيتل طعام جاف للكلاب</h4>
-                                </a>
-                                <h6>
-                                    19.99س.ر<span>56.99 س.ر</span>
-                                </h6>
-                                <div class="addit-box">
-                                    <div class="qty-box">
-                                        <div class="input-group">
-                                            <button class="qty-minus"></button>
-                                            <input class="qty-adj form-control" type="number" value="1" />
-                                            <button class="qty-plus"></button>
-                                        </div>
-                                    </div>
-                                    <div class="pro-add">
-
-                                        <a href="javascript:void(0)">
-                                            <i data-feather="trash-2"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-                <ul class="cart_total">
-                    <li>
-                        المجموع الفرعي : <span>ر.س1050.00</span>
-                    </li>
-                    <li>
-                        الشحن <span>مجاني</span>
-                    </li>
-
-                    <li>
-                        <div class="total">
-                            الإجمالي <span>ر.س 1050.00</span>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="buttons">
-                            <a href="cart.html" class="btn btn-solid btn-sm">عرض سلة التسوق</a>
-                            <a href="checkout.html" class="btn btn-solid btn-sm "> الدفع</a>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div> --}}
-    <!-- Add to cart bar end-->
 
     <!-- My account bar start-->
     <div id="myAccount" class="add_to_cart right account-bar">
@@ -339,8 +109,7 @@
                 </div>
                 <div class="form-group">
                     <label for="review">كلمة المرور</label>
-                    <input type="password" class="form-control" id="review" placeholder="كلمة المرور"
-                        required="">
+                    <input type="password" class="form-control" id="review" placeholder="كلمة المرور" required="">
                 </div>
                 <div class="form-group">
                     <a href="javascript:void(0)" class="btn btn-solid btn-md btn-block ">دخول</a>
@@ -362,9 +131,9 @@
     {{-- <script src="assets/js/jquery-3.3.1.min.js"></script> --}}
 
     @include('sweetalert::alert')
-    
+
     <!-- slick js -->
-    <script src="{{ asset('frontend/assets/js/slick.js') }}"></script> 
+    <script src="{{ asset('frontend/assets/js/slick.js') }}"></script>
 
     <!-- tool tip js -->
     <script src="{{ asset('frontend/assets/js/tippy-popper.min.js') }}"></script>
@@ -381,7 +150,7 @@
     <script src="{{ asset('frontend/assets/js/feather-icon.js') }}"></script>
 
     <!-- range sldier -->
-    <script src="{{ asset('frontend/assets/js/ion.rangeSlider.js') }}"></script> 
+    <script src="{{ asset('frontend/assets/js/ion.rangeSlider.js') }}"></script>
 
     <!-- Bootstrap js-->
     <script src="{{ asset('frontend/assets/js/bootstrap.js') }}"></script>
@@ -392,6 +161,54 @@
     <!-- Theme js-->
     <script src="{{ asset('frontend/assets/js/script.js') }}"></script>
     <script src="{{ asset('frontend/assets/js/modal.js') }}"></script>
+
+    <script src="{{ asset('dashboard_offline/js/moment.min.js') }}"></script>
+    <script src="{{ asset('dashboard_offline/js/bootstrap-datetimepicker.min.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            window._token = $('meta[name="csrf-token"]').attr('content')
+
+            moment.updateLocale('en', {
+                week: {
+                    dow: 1
+                } // Monday is the first day of the week
+            })
+
+            $('.date-package-picker').datetimepicker({
+                format: 'DD/MM/YYYY',
+                locale: 'en',
+                icons: {
+                    up: 'fas fa-chevron-up',
+                    down: 'fas fa-chevron-down',
+                    previous: 'fas fa-chevron-left',
+                    next: 'fas fa-chevron-right'
+                }
+            })
+
+            $('.datetime-package-picker').datetimepicker({
+                format: 'DD/MM/YYYY HH:mm:ss',
+                locale: 'en',
+                sideBySide: true,
+                icons: {
+                    up: 'fas fa-chevron-up',
+                    down: 'fas fa-chevron-down',
+                    previous: 'fas fa-chevron-left',
+                    next: 'fas fa-chevron-right'
+                }
+            })
+
+            $('.timepicker-package-picker').datetimepicker({
+                format: 'HH:mm:ss',
+                icons: {
+                    up: 'fas fa-chevron-up',
+                    down: 'fas fa-chevron-down',
+                    previous: 'fas fa-chevron-left',
+                    next: 'fas fa-chevron-right'
+                }
+            }) 
+
+        })
+    </script>
     @if (get_setting('recaptcha_active'))
         <script src="https://www.google.com/recaptcha/api.js"></script>
     @endif

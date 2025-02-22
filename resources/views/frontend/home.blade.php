@@ -168,7 +168,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <br> 
-                                    <a class="btn btn-white" href="{{ route('frontend.stray_pets') }}">{{ trans('frontend.home.stray_pets_text_2') }}</a>
+                                    <a class="btn btn-white" href="{{ route('frontend.stray-pets') }}">{{ trans('frontend.home.stray_pets_text_2') }}</a>
                                 </div>
                             </div>
                         </div>

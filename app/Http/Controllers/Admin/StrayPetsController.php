@@ -49,6 +49,9 @@ class StrayPetsController extends Controller
             $table->editColumn('id', function ($row) {
                 return $row->id ? $row->id : '';
             });
+            $table->editColumn('type', function ($row) {
+                return $row->type ? StrayPet::TYPE_SELECT[$row->type] : '';
+            });
             $table->editColumn('first_name', function ($row) {
                 return $row->first_name ? $row->first_name : '';
             });

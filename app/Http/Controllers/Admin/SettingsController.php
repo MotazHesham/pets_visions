@@ -37,6 +37,8 @@ class SettingsController extends Controller
             Setting::updateOrCreate(['key' => 'adoption_text'], ['value' => $request->adoption_text]); 
             Setting::updateOrCreate(['key' => 'copy_right'], ['value' => $request->copy_right]); 
             Setting::updateOrCreate(['key' => 'services_text'], ['value' => $request->services_text]); 
+            Setting::updateOrCreate(['key' => 'missing_pet_text'], ['value' => $request->missing_pet_text]); 
+            Setting::updateOrCreate(['key' => 'found_pet_text'], ['value' => $request->found_pet_text]); 
 
             if ($request->has('logo')) {
                 if( $request->input('logo') != "undefined"){ 

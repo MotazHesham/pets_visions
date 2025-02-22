@@ -587,6 +587,8 @@ return [
         'fields'         => [
             'id'                      => 'ID',
             'id_helper'               => ' ',
+            'type'                    => 'Type',
+            'type_helper'             => ' ',
             'first_name'              => 'First Name',
             'first_name_helper'       => ' ',
             'last_name'               => 'Last Name',

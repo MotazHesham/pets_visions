@@ -125,6 +125,16 @@
                                 <textarea class="form-control {{ $errors->has('services_text') ? 'is-invalid' : '' }}" name="services_text"
                                     id="services_text">{{ old('services_text', get_setting('services_text')) }}</textarea> 
                             </div>
+                            <div class="form-group col-md-6">
+                                <label for="missing_pet_text">{{ trans('cruds.setting.fields.missing_pet_text') }}</label>
+                                <textarea class="form-control {{ $errors->has('missing_pet_text') ? 'is-invalid' : '' }}" name="missing_pet_text"
+                                    id="missing_pet_text">{{ old('missing_pet_text', get_setting('missing_pet_text')) }}</textarea> 
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="found_pet_text">{{ trans('cruds.setting.fields.found_pet_text') }}</label>
+                                <textarea class="form-control {{ $errors->has('found_pet_text') ? 'is-invalid' : '' }}" name="found_pet_text"
+                                    id="found_pet_text">{{ old('found_pet_text', get_setting('found_pet_text')) }}</textarea> 
+                            </div>
                         </div>
                         <div class="form-group">
                             <button class="btn btn-danger" type="submit">

@@ -17,6 +17,9 @@ class StoreStrayPetRequest extends FormRequest
     public function rules()
     {
         return [
+            'type' => [
+                'required',
+            ],
             'first_name' => [
                 'string',
                 'nullable',

@@ -29,7 +29,13 @@ class StrayPet extends Model implements HasMedia
         'deleted_at',
     ];
 
+    public const TYPE_SELECT = [
+        'missing' => 'مفقود',
+        'found'   => 'تم العثور عليه',
+    ];
+    
     protected $fillable = [
+        'type',
         'first_name',
         'last_name',
         'email',
