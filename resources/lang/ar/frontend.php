@@ -115,4 +115,15 @@ return [
         'home' => 'الرئيسية',
         'first_aids' => 'إسعافات اولية',
     ],
+    'hostings' => [
+        'home' => 'الرئيسية',
+        'title' => 'إستضافة حيوانك الاليف',
+        'hosting' => 'إستضافة',
+        'request_hosting' => 'طلب استضافة',
+        'show' => 'عرض',
+        'search_by_hosting' => 'البحث عن مستضيف',
+        'search' => 'بحث',
+        'rate' => 'تقييم',
+        'request_service' => 'طلب الخدمة',
+    ],
 ];

@@ -4,6 +4,8 @@ use App\Http\Controllers\Frontend\ClinicReviewsController;
 use App\Http\Controllers\Frontend\ClinicsController;
 use App\Http\Controllers\Frontend\ClinicServicesController;
 use App\Http\Controllers\Frontend\HomeController;
+use App\Http\Controllers\Frontend\HostingReviewsController;
+use App\Http\Controllers\Frontend\HostingsController;
 use App\Http\Controllers\Frontend\ProductController;
 use App\Http\Controllers\Frontend\ProductReviewsController;
 use App\Http\Controllers\Frontend\ShopController;
@@ -15,7 +17,6 @@ Route::group(['as' => 'frontend.'], function () {
     Route::get('about', [HomeController::class,'about'])->name('about');
 
     Route::get('firstaids', [HomeController::class,'firstaids'])->name('firstaids');
-    Route::get('hostings', [HomeController::class,'hostings'])->name('hostings');
     Route::get('adoptions', [HomeController::class,'adoptions'])->name('adoptions');
     Route::get('pet_companions', [HomeController::class,'pet_companions'])->name('pet_companions');
     Route::get('stray_pets', [HomeController::class,'stray_pets'])->name('stray_pets');
@@ -42,6 +43,14 @@ Route::group(['as' => 'frontend.'], function () {
 
     // ProductReview
     Route::post('product-reviews/store',[ProductReviewsController::class, 'store'])->name('product-reviews.store');
+
+    // hostings
+    Route::get('hostings', [HostingsController::class,'hostings'])->name('hostings');
+    Route::get('hostings/{id}', [HostingsController::class,'show'])->name('hostings.show');
+
+    // hostingReviews
+    Route::get('hosting-reviews/{id}', [HostingReviewsController::class,'index'])->name('hosting-reviews');
+    Route::post('hosting-reviews/store',[HostingReviewsController::class, 'store'])->name('hosting-reviews.store');
 
     // Subscriptions
     Route::post('subscriptions/store', [SubscriptionsController::class,'store'])->name('subscriptions.store');
