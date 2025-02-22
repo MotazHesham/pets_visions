@@ -1,349 +1,401 @@
-<!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pets</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="{{ asset('frontend/assets/images/favicon/favicon.png') }}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ asset('frontend/assets/images/favicon/favicon.png') }}" type="image/x-icon">
 
-    <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <!--Google font-->
+    <link href="https://fonts.googleapis.com/css?family=PT+Sans:400,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Aclonica&display=swap" rel="stylesheet">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
 
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <!-- icons fonts-->
+    <link rel="stylesheet" type="text/css" href="{{ asset('frontend/assets/css/font-awesome.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('frontend/assets/css/themify.css') }}">
 
-    <!-- Styles -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet" />
-    <link href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" rel="stylesheet" />
-    <link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet" />
-    <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
-    <link href="https://cdn.datatables.net/buttons/1.2.4/css/buttons.dataTables.min.css" rel="stylesheet" />
-    <link href="https://cdn.datatables.net/select/1.3.0/css/select.dataTables.min.css" rel="stylesheet" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.min.css" rel="stylesheet" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/min/dropzone.min.css" rel="stylesheet" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/1.5.0/css/perfect-scrollbar.min.css" rel="stylesheet" />
-    <link href="{{ asset('css/custom.css') }}" rel="stylesheet" />
+    <!--Slick slider css-->
+    <link rel="stylesheet" type="text/css" href="{{ asset('frontend/assets/css/slick.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('frontend/assets/css/slick-theme.css') }}">
+
+    <!--Animate css-->
+    <link rel="stylesheet" type="text/css" href="{{ asset('frontend/assets/css/animate.css') }}">
+    <!-- Bootstrap css -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('frontend/assets/css/bootstrap.css') }}">
+
+    <!-- Theme css -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('frontend/assets/css/color7.css') }}" media="screen"
+        id="color">
+
+    <script src="https://code.jquery.com/jquery.js"></script>
+
+    <script src="{{ asset('frontend/src/skdslider.min.js') }}"></script>
+    <link href="{{ asset('frontend/src/skdslider.css') }}" rel="stylesheet">
+    <script type="text/javascript">
+        jQuery(document).ready(function() {
+            jQuery('#demo1').skdslider({
+                'delay': 5000,
+                'animationSpeed': 2000,
+                'showNextPrev': true,
+                'showPlayButton': false,
+                'autoSlide': true,
+                'animationType': 'sliding'
+            });
+
+
+            jQuery('#responsive').change(function() {
+                $('#responsive_wrapper').width(jQuery(this).val());
+            });
+
+        });
+    </script>
+
     @yield('styles')
 </head>
 
-<body>
-    <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-            <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
-                </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+<body class=" rtl rtl-text">
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mr-auto">
-                        @guest
-                        @else
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('frontend.home') }}">
-                                    {{ __('Dashboard') }}
-                                </a>
-                            </li>
-                        @endguest
-                    </ul>
+    <!-- loader start -->
+    <div class="loader-wrapper">
+        <div>
+            <img src="{{ asset('frontend/assets/images/loader.gif') }}" alt="loader">
+        </div>
+    </div>
+    <!-- loader end -->
 
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ml-auto">
-                        <!-- Authentication Links -->
-                        @guest
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                            </li>
-                            @if(Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
-                        @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }} <span class="caret"></span>
-                                </a>
+    @include('frontend.partials.header')
+    
+    @yield('content')
+    
+    @include('frontend.partials.footer')
 
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-
-                                    <a class="dropdown-item" href="{{ route('frontend.profile.index') }}">{{ __('My profile') }}</a>
-
-                                    @can('user_management_access')
-                                        <a class="dropdown-item disabled" href="#">
-                                            {{ trans('cruds.userManagement.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('permission_access')
-                                        <a class="dropdown-item ml-3" href="{{ route('frontend.permissions.index') }}">
-                                            {{ trans('cruds.permission.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('role_access')
-                                        <a class="dropdown-item ml-3" href="{{ route('frontend.roles.index') }}">
-                                            {{ trans('cruds.role.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('user_access')
-                                        <a class="dropdown-item ml-3" href="{{ route('frontend.users.index') }}">
-                                            {{ trans('cruds.user.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('store_managment_access')
-                                        <a class="dropdown-item disabled" href="#">
-                                            {{ trans('cruds.storeManagment.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('store_access')
-                                        <a class="dropdown-item ml-3" href="{{ route('frontend.stores.index') }}">
-                                            {{ trans('cruds.store.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('product_category_access')
-                                        <a class="dropdown-item ml-3" href="{{ route('frontend.product-categories.index') }}">
-                                            {{ trans('cruds.productCategory.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('product_access')
-                                        <a class="dropdown-item ml-3" href="{{ route('frontend.products.index') }}">
-                                            {{ trans('cruds.product.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('product_review_access')
-                                        <a class="dropdown-item ml-3" href="{{ route('frontend.product-reviews.index') }}">
-                                            {{ trans('cruds.productReview.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('product_wishlist_access')
-                                        <a class="dropdown-item ml-3" href="{{ route('frontend.product-wishlists.index') }}">
-                                            {{ trans('cruds.productWishlist.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('clinic_managment_access')
-                                        <a class="dropdown-item disabled" href="#">
-                                            {{ trans('cruds.clinicManagment.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('clinic_access')
-                                        <a class="dropdown-item ml-3" href="{{ route('frontend.clinics.index') }}">
-                                            {{ trans('cruds.clinic.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('clinic_service_access')
-                                        <a class="dropdown-item ml-3" href="{{ route('frontend.clinic-services.index') }}">
-                                            {{ trans('cruds.clinicService.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('clinic_review_access')
-                                        <a class="dropdown-item ml-3" href="{{ route('frontend.clinic-reviews.index') }}">
-                                            {{ trans('cruds.clinicReview.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('paramedic_access')
-                                        <a class="dropdown-item" href="{{ route('frontend.paramedics.index') }}">
-                                            {{ trans('cruds.paramedic.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('hosting_managment_access')
-                                        <a class="dropdown-item disabled" href="#">
-                                            {{ trans('cruds.hostingManagment.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('hosting_access')
-                                        <a class="dropdown-item ml-3" href="{{ route('frontend.hostings.index') }}">
-                                            {{ trans('cruds.hosting.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('hosting_review_access')
-                                        <a class="dropdown-item ml-3" href="{{ route('frontend.hosting-reviews.index') }}">
-                                            {{ trans('cruds.hostingReview.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('adoption_managment_access')
-                                        <a class="dropdown-item disabled" href="#">
-                                            {{ trans('cruds.adoptionManagment.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('adoption_pet_access')
-                                        <a class="dropdown-item ml-3" href="{{ route('frontend.adoption-pets.index') }}">
-                                            {{ trans('cruds.adoptionPet.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('adoption_request_access')
-                                        <a class="dropdown-item ml-3" href="{{ route('frontend.adoption-requests.index') }}">
-                                            {{ trans('cruds.adoptionRequest.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('pet_companion_managment_access')
-                                        <a class="dropdown-item disabled" href="#">
-                                            {{ trans('cruds.petCompanionManagment.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('pet_companion_access')
-                                        <a class="dropdown-item ml-3" href="{{ route('frontend.pet-companions.index') }}">
-                                            {{ trans('cruds.petCompanion.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('pet_companion_review_access')
-                                        <a class="dropdown-item ml-3" href="{{ route('frontend.pet-companion-reviews.index') }}">
-                                            {{ trans('cruds.petCompanionReview.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('stray_pet_access')
-                                        <a class="dropdown-item" href="{{ route('frontend.stray-pets.index') }}">
-                                            {{ trans('cruds.strayPet.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('delivery_pet_access')
-                                        <a class="dropdown-item" href="{{ route('frontend.delivery-pets.index') }}">
-                                            {{ trans('cruds.deliveryPet.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('pets_lover_managment_access')
-                                        <a class="dropdown-item disabled" href="#">
-                                            {{ trans('cruds.petsLoverManagment.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('user_pet_access')
-                                        <a class="dropdown-item ml-3" href="{{ route('frontend.user-pets.index') }}">
-                                            {{ trans('cruds.userPet.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('affiliation_analytic_access')
-                                        <a class="dropdown-item" href="{{ route('frontend.affiliation-analytics.index') }}">
-                                            {{ trans('cruds.affiliationAnalytic.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('news_access')
-                                        <a class="dropdown-item" href="{{ route('frontend.newss.index') }}">
-                                            {{ trans('cruds.news.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('news_comment_access')
-                                        <a class="dropdown-item" href="{{ route('frontend.news-comments.index') }}">
-                                            {{ trans('cruds.newsComment.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('volunteer_access')
-                                        <a class="dropdown-item" href="{{ route('frontend.volunteers.index') }}">
-                                            {{ trans('cruds.volunteer.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('contact_us_access')
-                                        <a class="dropdown-item" href="{{ route('frontend.contact-uss.index') }}">
-                                            {{ trans('cruds.contactUs.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('subscription_access')
-                                        <a class="dropdown-item" href="{{ route('frontend.subscriptions.index') }}">
-                                            {{ trans('cruds.subscription.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('general_setting_access')
-                                        <a class="dropdown-item disabled" href="#">
-                                            {{ trans('cruds.generalSetting.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('user_alert_access')
-                                        <a class="dropdown-item ml-3" href="{{ route('frontend.user-alerts.index') }}">
-                                            {{ trans('cruds.userAlert.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('pet_type_access')
-                                        <a class="dropdown-item ml-3" href="{{ route('frontend.pet-types.index') }}">
-                                            {{ trans('cruds.petType.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('hosting_service_access')
-                                        <a class="dropdown-item ml-3" href="{{ route('frontend.hosting-services.index') }}">
-                                            {{ trans('cruds.hostingService.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('slider_access')
-                                        <a class="dropdown-item ml-3" href="{{ route('frontend.sliders.index') }}">
-                                            {{ trans('cruds.slider.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('setting_access')
-                                        <a class="dropdown-item ml-3" href="{{ route('frontend.settings.index') }}">
-                                            {{ trans('cruds.setting.title') }}
-                                        </a>
-                                    @endcan
-
-                                    <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </li>
-                        @endguest
-                    </ul>
-                </div>
-            </div>
-        </nav>
-
-        <main class="py-4">
-            @if(session('message'))
-                <div class="container">
+    <!-- Quick-view modal popup start-->
+    {{-- <div class="modal fade bd-example-modal-lg theme-modal" id="quick-view" tabindex="-1" role="dialog"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content quick-view-modal">
+                <div class="modal-body">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     <div class="row">
-                        <div class="col-md-12">
-                            <div class="alert alert-success" role="alert">{{ session('message') }}</div>
+                        <div class="col-lg-6 col-xs-12">
+                            <div class="quick-view-img">
+                                <img src="assets/images/pngegg-12-1-PZu.png" alt="" class="img-fluid bg-img">
+                            </div>
                         </div>
-                    </div>
-                </div>
-            @endif
-            @if($errors->count() > 0)
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="alert alert-danger">
-                                <ul class="list-unstyled mb-0">
-                                    @foreach($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
+                        <div class="col-lg-6 rtl-text">
+                            <div class="product-right">
+                                <div class="pro-group">
+                                    <h2>
+                                        بي ديجري - فيتل طعام جاف للكلاب
+                                    </h2>
+                                    <ul class="pro-price">
+                                        <li>رس140</li>
+                                        <li><span>رس140 </span></li>
+                                        <li>50% خصم</li>
+                                    </ul>
+                                    <div class="revieu-box">
+                                        <ul>
+                                            <li><i class="fa fa-star"></i></li>
+                                            <li><i class="fa fa-star"></i></li>
+                                            <li><i class="fa fa-star"></i></li>
+                                            <li><i class="fa fa-star"></i></li>
+                                            <li><i class="fa fa-star-o"></i></li>
+                                        </ul>
+                                        <a href="review.html"><span>(6 تعليقات)</span></a>
+                                    </div>
+
+                                </div>
+                                <div class="pro-group">
+                                    <h6 class="product-title">بيانات المنتج</h6>
+                                    <p>هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد
+                                        النص العربى، حيث يمكنك أن تولد مثل هذا النص أو العديد من النصوص الأخرى إضافة إلى
+                                        زيادة عدد الحروف التى يولدها التطبيق.</p>
+                                </div>
+                                <div class="pro-group pb-0">
+
+                                    <div class="modal fade" id="sizemodal" tabindex="-1" role="dialog"
+                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Sheer Straight
+                                                        Kurta</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body"><img src="assets/images/size-chart.jpg"
+                                                        alt="" class="img-fluid "></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="size-box">
+                                        <ul>
+                                            <li><a href="javascript:void(0)"> 1/2 كيلو</a></li>
+                                            <li><a href="javascript:void(0)">1 كيلو</a></li>
+                                            <li><a href="javascript:void(0)">2 كيلو</a></li>
+
+                                        </ul>
+                                    </div>
+
+                                    <h6 class="product-title">العدد</h6>
+                                    <div class="qty-box">
+                                        <div class="input-group">
+                                            <button class="qty-minus"></button>
+                                            <input class="qty-adj form-control" type="number" value="1">
+                                            <button class="qty-plus"></button>
+                                        </div>
+                                    </div>
+                                    <div class="product-buttons">
+                                        <a href="javascript:void(0)" onclick="openCart()"
+                                            class="btn cart-btn btn-normal tooltip-top"
+                                            data-tippy-content="أضف الى السلة">
+                                            <i class="fa fa-shopping-cart"></i>
+                                            أضف الى السلة
+                                        </a>
+                                        <a href="single_products.html" class="btn btn-normal tooltip-top"
+                                            data-tippy-content="view detail">
+                                            المزيد
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            @endif
-            @yield('content')
-        </main>
+            </div>
+        </div>
+    </div> --}}
+    <!-- Quick-view modal popup end-->
+
+    <!-- Add to cart bar -->
+    {{-- <div id="cart_side" class="add_to_cart right ">
+        <a href="javascript:void(0)" class="overlay" onclick="closeCart()"></a>
+        <div class="cart-inner">
+            <div class="cart_top">
+                <h3>سلة التسوق</h3>
+                <div class="close-cart">
+                    <a href="javascript:void(0)" onclick="closeCart()">
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="cart_media">
+                <ul class="cart_product">
+                    <li>
+                        <div class="media">
+                            <a href="product-page(left-sidebar).html">
+                                <img alt="megastore1" class="me-3" src="assets/images/pro01.png">
+                            </a>
+                            <div class="media-body">
+                                <a href="product-page(left-sidebar).html">
+                                    <h4>بي ديجري - فيتل طعام جاف للكلاب</h4>
+                                </a>
+                                <h6>
+                                    19.99س.ر<span>56.99 س.ر</span>
+                                </h6>
+                                <div class="addit-box">
+                                    <div class="qty-box">
+                                        <div class="input-group">
+                                            <button class="qty-minus"></button>
+                                            <input class="qty-adj form-control" type="number" value="1" />
+                                            <button class="qty-plus"></button>
+                                        </div>
+                                    </div>
+                                    <div class="pro-add">
+                                        <a href="javascript:void(0)" data-bs-toggle="modal"
+                                            data-bs-target="#edit-product">
+                                            <i data-feather="edit"></i>
+                                        </a>
+                                        <a href="javascript:void(0)">
+                                            <i data-feather="trash-2"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li>
+                        <div class="media">
+                            <a href="product-page(left-sidebar).html">
+                                <img alt="megastore1" class="me-3" src="assets/images/pro01.png">
+                            </a>
+                            <div class="media-body">
+                                <a href="product-page(left-sidebar).html">
+                                    <h4>بي ديجري - فيتل طعام جاف للكلاب</h4>
+                                </a>
+                                <h6>
+                                    19.99س.ر<span>56.99 س.ر</span>
+                                </h6>
+                                <div class="addit-box">
+                                    <div class="qty-box">
+                                        <div class="input-group">
+                                            <button class="qty-minus"></button>
+                                            <input class="qty-adj form-control" type="number" value="1" />
+                                            <button class="qty-plus"></button>
+                                        </div>
+                                    </div>
+                                    <div class="pro-add">
+
+                                        <a href="javascript:void(0)">
+                                            <i data-feather="trash-2"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li>
+                        <div class="media">
+                            <a href="product-page(left-sidebar).html">
+                                <img alt="megastore1" class="me-3" src="assets/images/pro01.png">
+                            </a>
+                            <div class="media-body">
+                                <a href="product-page(left-sidebar).html">
+                                    <h4>بي ديجري - فيتل طعام جاف للكلاب</h4>
+                                </a>
+                                <h6>
+                                    19.99س.ر<span>56.99 س.ر</span>
+                                </h6>
+                                <div class="addit-box">
+                                    <div class="qty-box">
+                                        <div class="input-group">
+                                            <button class="qty-minus"></button>
+                                            <input class="qty-adj form-control" type="number" value="1" />
+                                            <button class="qty-plus"></button>
+                                        </div>
+                                    </div>
+                                    <div class="pro-add">
+
+                                        <a href="javascript:void(0)">
+                                            <i data-feather="trash-2"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <ul class="cart_total">
+                    <li>
+                        المجموع الفرعي : <span>ر.س1050.00</span>
+                    </li>
+                    <li>
+                        الشحن <span>مجاني</span>
+                    </li>
+
+                    <li>
+                        <div class="total">
+                            الإجمالي <span>ر.س 1050.00</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="buttons">
+                            <a href="cart.html" class="btn btn-solid btn-sm">عرض سلة التسوق</a>
+                            <a href="checkout.html" class="btn btn-solid btn-sm "> الدفع</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div> --}}
+    <!-- Add to cart bar end-->
+
+    <!-- My account bar start-->
+    <div id="myAccount" class="add_to_cart right account-bar">
+        <a href="javascript:void(0)" class="overlay" onclick="closeAccount()"></a>
+        <div class="cart-inner">
+            <div class="cart_top">
+                <h3>تسجيل الدخول</h3>
+                <div class="close-cart">
+                    <a href="javascript:void(0)" onclick="closeAccount()">
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </div>
+            <form class="theme-form">
+                <div class="form-group">
+                    <label for="email">البريد الإلكتروني</label>
+                    <input type="text" class="form-control" id="email" placeholder="البريد الإلكتروني"
+                        required="">
+                </div>
+                <div class="form-group">
+                    <label for="review">كلمة المرور</label>
+                    <input type="password" class="form-control" id="review" placeholder="كلمة المرور"
+                        required="">
+                </div>
+                <div class="form-group">
+                    <a href="javascript:void(0)" class="btn btn-solid btn-md btn-block ">دخول</a>
+                </div>
+                <div class="accout-fwd">
+                    <a href="forget-pwd.html" class="d-block">
+                        <h5>نسيت كلمة المرور؟</h5>
+                    </a>
+                    <a href="register.html" class="d-block">
+                        <h6>ليس لديك حساب؟<span> تسجيل مستخدم جديد</span></h6>
+                    </a>
+                </div>
+            </form>
+        </div>
     </div>
+    <!-- Add to account bar end-->
+
+    <!-- latest jquery -->
+    {{-- <script src="assets/js/jquery-3.3.1.min.js"></script> --}}
+
+    @include('sweetalert::alert')
+    
+    <!-- slick js -->
+    <script src="{{ asset('frontend/assets/js/slick.js') }}"></script> 
+
+    <!-- tool tip js -->
+    <script src="{{ asset('frontend/assets/js/tippy-popper.min.js') }}"></script>
+    <script src="{{ asset('frontend/assets/js/tippy-bundle.iife.min.js') }}"></script>
+
+    <!-- popper js-->
+    <script src="{{ asset('frontend/assets/js/popper.min.js') }}"></script>
+
+    <!-- menu js-->
+    <script src="{{ asset('frontend/assets/js/menu.js') }}"></script>
+
+    <!-- father icon -->
+    <script src="{{ asset('frontend/assets/js/feather.min.js') }}"></script>
+    <script src="{{ asset('frontend/assets/js/feather-icon.js') }}"></script>
+
+    <!-- range sldier -->
+    <script src="{{ asset('frontend/assets/js/ion.rangeSlider.js') }}"></script> 
+
+    <!-- Bootstrap js-->
+    <script src="{{ asset('frontend/assets/js/bootstrap.js') }}"></script>
+
+    <!-- Bootstrap js-->
+    <script src="{{ asset('frontend/assets/js/bootstrap-notify.min.js') }}"></script>
+
+    <!-- Theme js-->
+    <script src="{{ asset('frontend/assets/js/script.js') }}"></script>
+    <script src="{{ asset('frontend/assets/js/modal.js') }}"></script>
+    @if (get_setting('recaptcha_active'))
+        <script src="https://www.google.com/recaptcha/api.js"></script>
+    @endif
+    @yield('scripts')
 </body>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/1.5.0/perfect-scrollbar.min.js"></script>
-<script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
-<script src="//cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.min.js"></script>
-<script src="//cdn.datatables.net/buttons/1.2.4/js/buttons.flash.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.html5.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.print.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.colVis.min.js"></script>
-<script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
-<script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
-<script src="https://cdn.datatables.net/select/1.3.0/js/dataTables.select.min.js"></script>
-<script src="https://cdn.ckeditor.com/ckeditor5/16.0.0/classic/ckeditor.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.full.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/min/dropzone.min.js"></script>
-<script src="{{ asset('js/main.js') }}"></script>
-@yield('scripts')
 
 </html>

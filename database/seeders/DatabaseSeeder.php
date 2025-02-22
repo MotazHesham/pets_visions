@@ -15,6 +15,15 @@ class DatabaseSeeder extends Seeder
             UsersTableSeeder::class,
             RoleUserTableSeeder::class,
             PetTypeSeeder::class,
+            CategorySeeeder::class,
+            
+            // SettingTableSeeder::class,
+            // SliderSeeder::class,
+            // ClinicSeeder::class,
+            // StoreSeeder::class,
+            // ProductSeeder::class,
+            // HostingSeeder::class,
+            // AccompanySeeder::class,
         ]);
     }
 }

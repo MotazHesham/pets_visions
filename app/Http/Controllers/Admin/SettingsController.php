@@ -35,6 +35,8 @@ class SettingsController extends Controller
             Setting::updateOrCreate(['key' => 'rescuecase_text'], ['value' => $request->rescuecase_text]);
             Setting::updateOrCreate(['key' => 'hosting_text'], ['value' => $request->hosting_text]);
             Setting::updateOrCreate(['key' => 'adoption_text'], ['value' => $request->adoption_text]); 
+            Setting::updateOrCreate(['key' => 'copy_right'], ['value' => $request->copy_right]); 
+            Setting::updateOrCreate(['key' => 'services_text'], ['value' => $request->services_text]); 
 
             if ($request->has('logo')) {
                 if( $request->input('logo') != "undefined"){ 
@@ -91,6 +93,17 @@ class SettingsController extends Controller
             Setting::updateOrCreate(['key' => 'sidemenu_icon_color'], ['value' => $request->sidemenu_icon_color]);  
             Setting::updateOrCreate(['key' => 'font_link'], ['value' => implode(',',$request->font_link)]); 
             Setting::updateOrCreate(['key' => 'font_name'], ['value' => implode(',',$request->font_name)]); 
+        }elseif($request->setting_type == 'setting_6'){
+            
+            if($request->important_links != null && count($request->important_links) > 0){
+                Setting::updateOrCreate(['key' => 'important_links'], ['value' => json_encode($request->important_links)]); 
+            }else{
+                Setting::updateOrCreate(['key' => 'important_links'], ['value' => null]); 
+            }
+        }elseif($request->setting_type == 'setting_7'){ 
+            Setting::updateOrCreate(['key' => 'recaptcha_active'], ['value' => $request->recaptcha_active]); 
+            Setting::updateOrCreate(['key' => 'recaptcha_site_key'], ['value' => $request->recaptcha_site_key]); 
+            Setting::updateOrCreate(['key' => 'recaptcha_secret_key'], ['value' => $request->recaptcha_secret_key]);  
         }
         
 

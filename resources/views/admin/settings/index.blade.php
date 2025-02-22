@@ -38,6 +38,18 @@
                         إعادادات لوحة التحكم
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link @if (request('setting_type') == 'setting_6') active @endif" href="#setting_6" role="tab"
+                        data-toggle="tab">
+                        روابط مهمة
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link @if (request('setting_type') == 'setting_7') active @endif" href="#setting_7" role="tab"
+                        data-toggle="tab">
+                        Recaptcha Setting
+                    </a>
+                </li>
             </ul>
             
             <div class="tab-content">
@@ -103,6 +115,16 @@
                                 <textarea class="form-control  ckeditor {{ $errors->has('adoption_text') ? 'is-invalid' : '' }}" name="adoption_text"
                                     id="adoption_text">{{ old('adoption_text', get_setting('adoption_text')) }}</textarea> 
                             </div>  
+                            <div class="form-group col-md-6">
+                                <label for="copy_right">{{ trans('cruds.setting.fields.copy_right') }}</label>
+                                <input class="form-control {{ $errors->has('copy_right') ? 'is-invalid' : '' }}" type="text"
+                                    name="copy_right" id="copy_right" value="{{ old('copy_right', get_setting('copy_right')) }}"> 
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="services_text">{{ trans('cruds.setting.fields.services_text') }}</label>
+                                <textarea class="form-control {{ $errors->has('services_text') ? 'is-invalid' : '' }}" name="services_text"
+                                    id="services_text">{{ old('services_text', get_setting('services_text')) }}</textarea> 
+                            </div>
                         </div>
                         <div class="form-group">
                             <button class="btn btn-danger" type="submit">
@@ -257,12 +279,129 @@
                         </div>
                     </form>
                 </div>
+                <div class="tab-pane @if (request('setting_type') == 'setting_6') active @endif" role="tabpanel" id="setting_6">
+                    <form method="POST" action="{{ route('admin.settings.update') }}" enctype="multipart/form-data"
+                        class="p-4">
+                        @csrf
+                        <input type="hidden" name="setting_type" value="setting_6">
+                        <div class="row" id="dynamic-links-container">
+                            @if (get_setting('important_links'))
+                                @foreach (json_decode(get_setting('important_links'), true) as $key => $link)
+                                    <div class="link-row form-group col-md-12 d-flex">
+                                        <div class="form-group col-md-4">
+                                            <label>اسم الرابط</label>
+                                            <input class="form-control" type="text"
+                                                name="important_links[{{ $key }}][name]"
+                                                placeholder="اسم الرابط" value="{{ $link['name'] }}">
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label>الرابط</label>
+                                            <input class="form-control" type="text"
+                                                name="important_links[{{ $key }}][link]" placeholder="الرابط"
+                                                value="{{ $link['link'] }}">
+                                        </div>
+                                        <div class="form-group col-md-2">
+                                            <button type="button" class="btn btn-danger remove-row mt-4">x</button>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            @else
+                                <div class="link-row form-group col-md-12 d-flex">
+                                    <div class="form-group col-md-4">
+                                        <label>اسم الرابط</label>
+                                        <input class="form-control" type="text" name="important_links[0][name]"
+                                            placeholder="اسم الرابط">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label>الرابط</label>
+                                        <input class="form-control" type="text" name="important_links[0][link]"
+                                            placeholder="الرابط">
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <button type="button" class="btn btn-danger remove-row mt-4">x</button>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+                        <div class="text-center">
+
+                            <button type="button" class="btn btn-success" id="add-more">إضافة المزيد</button>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-danger" type="submit">
+                                {{ trans('global.save') }}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="tab-pane @if (request('setting_type') == 'setting_7') active @endif" role="tabpanel" id="setting_7">
+                    <form method="POST" action="{{ route('admin.settings.update') }}" enctype="multipart/form-data"
+                        class="p-4">
+                        @csrf
+                        <input type="hidden" name="setting_type" value="setting_7">
+                        <div class="form-group">
+                            <label>تفعيل Google Recaptcha</label>
+                            <br>
+                            <label class="c-switch c-switch-pill c-switch-success">
+                                <input type="checkbox" name="recaptcha_active" class="c-switch-input"
+                                    {{ get_setting('recaptcha_active') ? 'checked' : null }}>
+                                <span class="c-switch-slider"></span>
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label>Site Key</label>
+                            <input class="form-control" type="text" name="recaptcha_site_key"
+                                value="{{ get_setting('recaptcha_site_key') }}">
+                        </div>
+                        <div class="form-group">
+                            <label>Secret Key</label>
+                            <input class="form-control" type="text" name="recaptcha_secret_key"
+                                value="{{ get_setting('recaptcha_secret_key') }}">
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-danger" type="submit">
+                                {{ trans('global.save') }}
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div> 
         </div>
     </div>
 @endsection
 
 @section('scripts')
+    <script>
+        $('#add-more').on('click', function() {
+            const container = $('#dynamic-links-container');
+            const rows = container.find('.link-row');
+
+            // Get the last row's index and increment it for the new row
+            const newIndex = rows.length > 0 ? parseInt(rows.last().find('input').attr('name').match(/\[(\d+)\]/)[
+                1]) + 1 : 0;
+
+            const firstRow = rows.first();
+            if (firstRow.length) {
+                const newRow = firstRow.clone();
+
+                // Update the name attributes in the cloned row
+                newRow.find('input').each(function() {
+                    const name = $(this).attr('name').replace(/\[\d+\]/, `[${newIndex}]`);
+                    $(this).attr('name', name);
+                });
+
+                // Clear the input values in the cloned row
+                newRow.find('input').val('');
+
+                // Append the new row to the container
+                container.append(newRow);
+            }
+        });
+
+        $(document).on('click', '.remove-row', function() {
+            $(this).closest('.link-row').remove();
+        });
+    </script>
     <script>
         Dropzone.options.logoDropzone = {
             url: '{{ route('admin.settings.storeMedia') }}',

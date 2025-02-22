@@ -2,78 +2,32 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\MassDestroySubscriptionRequest;
-use App\Http\Requests\StoreSubscriptionRequest;
-use App\Http\Requests\UpdateSubscriptionRequest;
+use App\Http\Controllers\Controller;  
 use App\Models\Subscription;
-use Gate;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class SubscriptionsController extends Controller
-{
-    public function index()
+{ 
+
+    public function store(Request $request)
     {
-        abort_if(Gate::denies('subscription_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-        $subscriptions = Subscription::all();
-
-        return view('frontend.subscriptions.index', compact('subscriptions'));
-    }
-
-    public function create()
-    {
-        abort_if(Gate::denies('subscription_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-        return view('frontend.subscriptions.create');
-    }
-
-    public function store(StoreSubscriptionRequest $request)
-    {
-        $subscription = Subscription::create($request->all());
-
-        return redirect()->route('frontend.subscriptions.index');
-    }
-
-    public function edit(Subscription $subscription)
-    {
-        abort_if(Gate::denies('subscription_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-        return view('frontend.subscriptions.edit', compact('subscription'));
-    }
-
-    public function update(UpdateSubscriptionRequest $request, Subscription $subscription)
-    {
-        $subscription->update($request->all());
-
-        return redirect()->route('frontend.subscriptions.index');
-    }
-
-    public function show(Subscription $subscription)
-    {
-        abort_if(Gate::denies('subscription_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-        return view('frontend.subscriptions.show', compact('subscription'));
-    }
-
-    public function destroy(Subscription $subscription)
-    {
-        abort_if(Gate::denies('subscription_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-        $subscription->delete();
-
-        return back();
-    }
-
-    public function massDestroy(MassDestroySubscriptionRequest $request)
-    {
-        $subscriptions = Subscription::find(request('ids'));
-
-        foreach ($subscriptions as $subscription) {
-            $subscription->delete();
+        $request->validate([
+            'name' => 'required|max:255',
+            'email' => 'required|max:255',
+        ]);
+        if(get_setting('recaptcha_active') && app()->isProduction()){
+            if (!$request->has('g-recaptcha-response') || $request->input('g-recaptcha-response') == null) {
+                toast(trans('frontend.toast.error'),'error');
+                return redirect()->route('frontend.home');
+            } 
         }
 
-        return response(null, Response::HTTP_NO_CONTENT);
-    }
+        Subscription::create([
+            'name' => $request->name,
+            'email' => $request->email,
+        ]);
+
+        toast(trans('frontend.toast.success'),'success');
+        return redirect()->route('frontend.home');
+    } 
 }

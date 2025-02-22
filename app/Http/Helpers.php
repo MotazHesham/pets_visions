@@ -21,6 +21,11 @@ if(!function_exists('currentClinic')){
     }
 } 
 
+if (!function_exists('getFromRequest')) {
+    function getFromRequest($key,$default = null){
+        return request()->has($key) && request($key) !== null ? request($key) : $default;
+	}
+}
 
 if (!function_exists('implodeWithQuotes')) {
     function implodeWithQuotes(array $items): string {
