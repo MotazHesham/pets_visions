@@ -894,6 +894,8 @@ return [
             'hosting_text_helper' => ' ',
             'about' => 'عنا',
             'about_helper' => ' ',
+            'delivery_text' => 'نص توصيل الحيوانات',
+            'delivery_text_helper' => ' ',
             'missing_pet_text' => 'نص فقد حيوان',
             'missing_pet_text_helper' => ' ',
             'found_pet_text' => 'نص العثور علي حيوان',

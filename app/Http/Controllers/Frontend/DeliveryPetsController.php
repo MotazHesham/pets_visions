@@ -2,78 +2,53 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\MassDestroyDeliveryPetRequest;
-use App\Http\Requests\StoreDeliveryPetRequest;
-use App\Http\Requests\UpdateDeliveryPetRequest;
+use App\Http\Controllers\Controller; 
 use App\Models\DeliveryPet;
-use Gate;
-use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
+use App\Models\PetType;
+use Illuminate\Http\Request; 
 
 class DeliveryPetsController extends Controller
 {
-    public function index()
+    public function delivery_pets()
+    {   
+        $pet_types = PetType::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+
+        return view('frontend.delivery-pets',compact('pet_types'));
+    } 
+
+    public function store(Request $request)
     {
-        abort_if(Gate::denies('delivery_pet_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        $request->validate([
+            'date' => [
+                'date_format:' . config('panel.date_format'),
+                'required',
+            ],
+            'name' => [
+                'string',
+                'required',
+                'max:255',
+            ],
+            'phone' => [
+                'string',
+                'required',
+                'max:255',
+            ],
+            'email' => [
+                'string',
+                'required',
+                'max:255',
+            ],
+        ]);
+        $request->merge([
+            'pets_details' => json_encode($request->pets_details)
+        ]);
+        DeliveryPet::create($request->only([ 
+            'from_city', 'to_city', 'date',
+            'note', 'name', 'email', 'phone',
+            'pets_details',
+        ]));
 
-        $deliveryPets = DeliveryPet::all();
-
-        return view('frontend.deliveryPets.index', compact('deliveryPets'));
-    }
-
-    public function create()
-    {
-        abort_if(Gate::denies('delivery_pet_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-        return view('frontend.deliveryPets.create');
-    }
-
-    public function store(StoreDeliveryPetRequest $request)
-    {
-        $deliveryPet = DeliveryPet::create($request->all());
-
-        return redirect()->route('frontend.delivery-pets.index');
-    }
-
-    public function edit(DeliveryPet $deliveryPet)
-    {
-        abort_if(Gate::denies('delivery_pet_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-        return view('frontend.deliveryPets.edit', compact('deliveryPet'));
-    }
-
-    public function update(UpdateDeliveryPetRequest $request, DeliveryPet $deliveryPet)
-    {
-        $deliveryPet->update($request->all());
-
-        return redirect()->route('frontend.delivery-pets.index');
-    }
-
-    public function show(DeliveryPet $deliveryPet)
-    {
-        abort_if(Gate::denies('delivery_pet_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-        return view('frontend.deliveryPets.show', compact('deliveryPet'));
-    }
-
-    public function destroy(DeliveryPet $deliveryPet)
-    {
-        abort_if(Gate::denies('delivery_pet_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-        $deliveryPet->delete();
-
-        return back();
-    }
-
-    public function massDestroy(MassDestroyDeliveryPetRequest $request)
-    {
-        $deliveryPets = DeliveryPet::find(request('ids'));
-
-        foreach ($deliveryPets as $deliveryPet) {
-            $deliveryPet->delete();
-        }
-
-        return response(null, Response::HTTP_NO_CONTENT);
-    }
+        toast(trans('frontend.toast.success'),'success');
+        return redirect()->back(); 
+    } 
 }

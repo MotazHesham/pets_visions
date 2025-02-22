@@ -135,6 +135,11 @@
                                 <textarea class="form-control {{ $errors->has('found_pet_text') ? 'is-invalid' : '' }}" name="found_pet_text"
                                     id="found_pet_text">{{ old('found_pet_text', get_setting('found_pet_text')) }}</textarea> 
                             </div>
+                            <div class="form-group col-md-6">
+                                <label for="delivery_text">{{ trans('cruds.setting.fields.delivery_text') }}</label>
+                                <textarea class="form-control {{ $errors->has('delivery_text') ? 'is-invalid' : '' }}" name="delivery_text"
+                                    id="delivery_text">{{ old('delivery_text', get_setting('delivery_text')) }}</textarea> 
+                            </div>
                         </div>
                         <div class="form-group">
                             <button class="btn btn-danger" type="submit">

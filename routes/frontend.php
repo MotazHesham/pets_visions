@@ -5,6 +5,7 @@ use App\Http\Controllers\Frontend\AdoptionPetsController;
 use App\Http\Controllers\Frontend\ClinicReviewsController;
 use App\Http\Controllers\Frontend\ClinicsController;
 use App\Http\Controllers\Frontend\ClinicServicesController;
+use App\Http\Controllers\Frontend\DeliveryPetsController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\HostingReviewsController;
 use App\Http\Controllers\Frontend\HostingsController;
@@ -18,11 +19,10 @@ use App\Http\Controllers\Frontend\SubscriptionsController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['as' => 'frontend.'], function () {
-    Route::get('/', [HomeController::class,'index'])->name('home');
-    Route::get('about', [HomeController::class,'about'])->name('about');
 
+    Route::get('/', [HomeController::class,'index'])->name('home');
+    Route::get('about', [HomeController::class,'about'])->name('about'); 
     Route::get('firstaids', [HomeController::class,'firstaids'])->name('firstaids');
-    Route::get('delivery_pets', [HomeController::class,'delivery_pets'])->name('delivery-pets');
 
     // Shops
     Route::get('shops', [ShopController::class,'shops'])->name('shops');
@@ -73,6 +73,10 @@ Route::group(['as' => 'frontend.'], function () {
     Route::get('stray-pets', [StrayPetsController::class,'stray_pets'])->name('stray-pets');
     Route::get('stray-pets/create/{type}', [StrayPetsController::class,'create'])->name('stray-pets.create');
     Route::post('stray-pets/store', [StrayPetsController::class,'store'])->name('stray-pets.store');
+
+    // deliveryPets
+    Route::get('delivery-pets', [DeliveryPetsController::class,'delivery_pets'])->name('delivery-pets');
+    Route::post('delivery-pets/store', [DeliveryPetsController::class,'store'])->name('delivery-pets.store');
 
     // Subscriptions
     Route::post('subscriptions/store', [SubscriptionsController::class,'store'])->name('subscriptions.store');
