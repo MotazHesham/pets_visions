@@ -94,37 +94,71 @@
         <a href="javascript:void(0)" class="overlay" onclick="closeAccount()"></a>
         <div class="cart-inner">
             <div class="cart_top">
-                <h3>تسجيل الدخول</h3>
+                <h3>{{ trans('frontend.login_modal.title') }}</h3>
                 <div class="close-cart">
                     <a href="javascript:void(0)" onclick="closeAccount()">
                         <i class="fa fa-times" aria-hidden="true"></i>
                     </a>
                 </div>
             </div>
-            <form class="theme-form">
+            <form class="theme-form" action="{{ route('frontend.login') }}">
+                @csrf
+                @if (session('message'))
+                    <div class="row mb-2">
+                        <div class="col-lg-12">
+                            <div class="alert alert-success" role="alert">{{ session('message') }}
+                            </div>
+                        </div>
+                    </div>
+                @endif
+                @if ($errors->count() > 0)
+                    <div class="alert alert-danger">
+                        <ul class="list-unstyled">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
                 <div class="form-group">
-                    <label for="email">البريد الإلكتروني</label>
-                    <input type="text" class="form-control" id="email" placeholder="البريد الإلكتروني"
+                    <label for="email">{{ trans('frontend.login_modal.email') }}</label>
+                    <input type="email" name="login_email" class="form-control" id="email" placeholder="{{ trans('frontend.login_modal.email') }}"
                         required="">
+                    @if ($errors->has('login_email'))
+                        <div class="invalid-feedback d-flex">
+                            {{ $errors->first('login_email') }}
+                        </div>
+                    @endif
                 </div>
                 <div class="form-group">
-                    <label for="review">كلمة المرور</label>
-                    <input type="password" class="form-control" id="review" placeholder="كلمة المرور" required="">
+                    <label for="login_password">{{ trans('frontend.login_modal.password') }}</label>
+                    <input type="password" class="form-control" name="login_password" id="login_password" placeholder="{{ trans('frontend.login_modal.password') }}" required="">
+                    @if ($errors->has('login_password'))
+                        <div class="invalid-feedback d-flex">
+                            {{ $errors->first('login_password') }}
+                        </div>
+                    @endif
                 </div>
+                @include('partials.recaptcha')
                 <div class="form-group">
-                    <a href="javascript:void(0)" class="btn btn-solid btn-md btn-block ">دخول</a>
+                    <a href="javascript:void(0)" class="btn btn-solid btn-md btn-block ">{{ trans('frontend.login_modal.login') }}</a>
                 </div>
                 <div class="accout-fwd">
-                    <a href="forget-pwd.html" class="d-block">
+                    {{-- <a href="forget-pwd.html" class="d-block">
                         <h5>نسيت كلمة المرور؟</h5>
-                    </a>
+                    </a> --}}
                     <a href="register.html" class="d-block">
-                        <h6>ليس لديك حساب؟<span> تسجيل مستخدم جديد</span></h6>
+                        <h6>{{ trans('frontend.login_modal.register_q') }}<span>{{ trans('frontend.login_modal.register') }}</span></h6>
                     </a>
                 </div>
             </form>
         </div>
     </div>
+    
+    <form id="logoutform" action="{{ route('logout') }}" method="POST" style="display: none;">
+        {{ csrf_field() }}
+    </form>
+
     <!-- Add to account bar end-->
 
     <!-- latest jquery -->
@@ -207,6 +241,14 @@
                 }
             }) 
 
+        })
+        
+        $(document).ready(function() {
+            @if (
+                $errors->count() > 0 &&
+                    ($errors->has('invalid_login') || $errors->has('login_email') || $errors->has('login_password')))
+                openAccount();
+            @endif 
         })
     </script>
     @if (get_setting('recaptcha_active'))

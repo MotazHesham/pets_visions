@@ -2,78 +2,41 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\MassDestroyVolunteerRequest;
-use App\Http\Requests\StoreVolunteerRequest;
-use App\Http\Requests\UpdateVolunteerRequest;
-use App\Models\Volunteer;
-use Gate;
+use App\Http\Controllers\Controller; 
+use App\Models\Volunteer; 
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class VolunteersController extends Controller
 {
-    public function index()
+    public function volunteers()
+    {   
+        return view('frontend.volunteers');
+    } 
+
+    public function store(Request $request)
     {
-        abort_if(Gate::denies('volunteer_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        $request->validate([
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'email' => 'required|email',
+            'phone' => 'required',
+            'gender' => 'required', 
+            'age' => 'required', 
+            'experience' => 'required', 
+            'fields' => 'required', 
+            'period_time' => 'required', 
+            'note' => 'required',
+        ]);
 
-        $volunteers = Volunteer::all();
+        Volunteer::create($request->only([
+            'first_name', 'last_name', 'phone', 'email',
+            'gender', 'age', 'experience', 'fields',
+            'period_time', 'note',
+        ])); 
 
-        return view('frontend.volunteers.index', compact('volunteers'));
+        toast(trans('frontend.toast.success'),'success');
+        return redirect()->back(); 
     }
 
-    public function create()
-    {
-        abort_if(Gate::denies('volunteer_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-        return view('frontend.volunteers.create');
-    }
-
-    public function store(StoreVolunteerRequest $request)
-    {
-        $volunteer = Volunteer::create($request->all());
-
-        return redirect()->route('frontend.volunteers.index');
-    }
-
-    public function edit(Volunteer $volunteer)
-    {
-        abort_if(Gate::denies('volunteer_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-        return view('frontend.volunteers.edit', compact('volunteer'));
-    }
-
-    public function update(UpdateVolunteerRequest $request, Volunteer $volunteer)
-    {
-        $volunteer->update($request->all());
-
-        return redirect()->route('frontend.volunteers.index');
-    }
-
-    public function show(Volunteer $volunteer)
-    {
-        abort_if(Gate::denies('volunteer_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-        return view('frontend.volunteers.show', compact('volunteer'));
-    }
-
-    public function destroy(Volunteer $volunteer)
-    {
-        abort_if(Gate::denies('volunteer_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-        $volunteer->delete();
-
-        return back();
-    }
-
-    public function massDestroy(MassDestroyVolunteerRequest $request)
-    {
-        $volunteers = Volunteer::find(request('ids'));
-
-        foreach ($volunteers as $volunteer) {
-            $volunteer->delete();
-        }
-
-        return response(null, Response::HTTP_NO_CONTENT);
-    }
 }

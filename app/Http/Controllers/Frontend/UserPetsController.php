@@ -3,126 +3,126 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Traits\MediaUploadingTrait;
-use App\Http\Requests\MassDestroyUserPetRequest;
-use App\Http\Requests\StoreUserPetRequest;
-use App\Http\Requests\UpdateUserPetRequest;
 use App\Models\PetType;
-use App\Models\User;
-use App\Models\UserPet;
-use Gate;
+use App\Models\UserPet; 
 use Illuminate\Http\Request;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
-use Symfony\Component\HttpFoundation\Response;
+use Spatie\MediaLibrary\MediaCollections\Models\Media; 
 
 class UserPetsController extends Controller
-{
-    use MediaUploadingTrait;
+{ 
 
-    public function index()
-    {
-        abort_if(Gate::denies('user_pet_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-        $userPets = UserPet::with(['pet_type', 'user', 'media'])->get();
-
-        return view('frontend.userPets.index', compact('userPets'));
-    }
-
-    public function create()
-    {
-        abort_if(Gate::denies('user_pet_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+    public function my_pets(){
+        $user = auth()->user();
 
         $pet_types = PetType::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $users = User::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
-
-        return view('frontend.userPets.create', compact('pet_types', 'users'));
+        return view('frontend.dashboard.my-pets',compact('user','pet_types'));
     }
-
-    public function store(StoreUserPetRequest $request)
-    {
-        $userPet = UserPet::create($request->all());
-
-        if ($request->input('photo', false)) {
-            $userPet->addMedia(storage_path('tmp/uploads/' . basename($request->input('photo'))))->toMediaCollection('photo');
+    public function store(Request $request){
+        $user = auth()->user();
+        $request->validate([
+            'name' => [
+                'string',
+                'max:255',
+                'required',
+            ],
+            'dob' => [
+                'required',
+                'date_format:' . config('panel.date_format'),
+            ],
+            'gender' => [
+                'required',
+            ],
+            'pet_type_id' => [
+                'required',
+                'integer',
+                'exists:user_pets,id'
+            ],
+            'fasila' => [
+                'string',
+                'max:255',
+                'required',
+            ], 
+            'photo' => [
+                'required',
+                'image',
+                'max:4096',
+            ]
+        ]);
+        $request->merge(['user_id' => $user->id]);
+        $userPet = UserPet::create($request->only([ 'name', 'dob', 'gender', 'pet_type_id', 'fasila', 'user_id']));
+        
+        if ($request->photo) {
+            $userPet->addMedia($request->photo)->toMediaCollection('photo');
         }
 
-        if ($media = $request->input('ck-media', false)) {
-            Media::whereIn('id', $media)->update(['model_id' => $userPet->id]);
+        toast(trans('frontend.toast.success'),'success');
+        return redirect()->route('frontend.dashboard.my-pets');
+    }  
+
+    public function update(Request $request)
+    {
+        $request->validate([
+            'id' => [
+                'required',
+                'integer',
+                'exists:user_pets,id'
+            ],
+            'name' => [
+                'string',
+                'max:255',
+                'required',
+            ],
+            'dob' => [
+                'required',
+                'date_format:' . config('panel.date_format'),
+            ],
+            'gender' => [
+                'required',
+            ],
+            'pet_type_id' => [
+                'required',
+                'integer',
+                'exists:pet_types,id'
+            ],
+            'fasila' => [
+                'string',
+                'max:255',
+                'required',
+            ], 
+            'photo' => [
+                'nullable',
+                'image',
+                'max:4096',
+            ]
+        ]);
+        $userPet = UserPet::findOrFail($request->id);
+        $userPet->update($request->only([ 'name', 'dob', 'gender', 'pet_type_id', 'fasila']));
+
+        if ($request->photo) {
+            $userPet->addMedia($request->photo)->toMediaCollection('photo');
         }
 
-        return redirect()->route('frontend.user-pets.index');
+        toast(trans('frontend.toast.success'),'success');
+        return redirect()->route('frontend.dashboard.my-pets.show',$userPet->id);
     }
 
-    public function edit(UserPet $userPet)
-    {
-        abort_if(Gate::denies('user_pet_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
+    public function show($id)
+    { 
         $pet_types = PetType::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $users = User::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
-
+        $userPet = UserPet::findOrFail($id);
         $userPet->load('pet_type', 'user');
 
-        return view('frontend.userPets.edit', compact('pet_types', 'userPet', 'users'));
+        return view('frontend.dashboard.show_pet', compact('userPet','pet_types'));
     }
 
-    public function update(UpdateUserPetRequest $request, UserPet $userPet)
-    {
-        $userPet->update($request->all());
-
-        if ($request->input('photo', false)) {
-            if (! $userPet->photo || $request->input('photo') !== $userPet->photo->file_name) {
-                if ($userPet->photo) {
-                    $userPet->photo->delete();
-                }
-                $userPet->addMedia(storage_path('tmp/uploads/' . basename($request->input('photo'))))->toMediaCollection('photo');
-            }
-        } elseif ($userPet->photo) {
-            $userPet->photo->delete();
-        }
-
-        return redirect()->route('frontend.user-pets.index');
-    }
-
-    public function show(UserPet $userPet)
-    {
-        abort_if(Gate::denies('user_pet_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-        $userPet->load('pet_type', 'user');
-
-        return view('frontend.userPets.show', compact('userPet'));
-    }
-
-    public function destroy(UserPet $userPet)
-    {
-        abort_if(Gate::denies('user_pet_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
+    public function destroy($id)
+    { 
+        $userPet = UserPet::findOrFail($id);
         $userPet->delete();
 
-        return back();
-    }
-
-    public function massDestroy(MassDestroyUserPetRequest $request)
-    {
-        $userPets = UserPet::find(request('ids'));
-
-        foreach ($userPets as $userPet) {
-            $userPet->delete();
-        }
-
-        return response(null, Response::HTTP_NO_CONTENT);
-    }
-
-    public function storeCKEditorImages(Request $request)
-    {
-        abort_if(Gate::denies('user_pet_create') && Gate::denies('user_pet_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-        $model         = new UserPet();
-        $model->id     = $request->input('crud_id', 0);
-        $model->exists = true;
-        $media         = $model->addMediaFromRequest('upload')->toMediaCollection('ck-media');
-
-        return response()->json(['id' => $media->id, 'url' => $media->getUrl()], Response::HTTP_CREATED);
-    }
+        toast(trans('frontend.toast.success'),'success');
+        return redirect()->route('frontend.dashboard.my-pets');
+    } 
 }

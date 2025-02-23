@@ -74,7 +74,7 @@
                                                 <span class="input-group-text"><i class="ti-email"></i></span>
                                             </div>
                                         </div>
-                                        @include('frontend.partials.recaptcha')
+                                        @include('partials.recaptcha')
                                         <div class="form-group">
                                             <button type="submit" class="btn btn-solid btn-sm">{{ trans('frontend.footer.subscribe') }}</button>
                                         </div>
