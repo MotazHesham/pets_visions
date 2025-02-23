@@ -120,4 +120,14 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Role::class);
     }
+
+    public function clinic(){
+        return $this->hasOne(Clinic::class);
+    }
+    public function hosting(){
+        return $this->hasOne(Hosting::class);
+    }
+    public function petCompanion(){
+        return $this->hasOne(PetCompanion::class);
+    }
 }

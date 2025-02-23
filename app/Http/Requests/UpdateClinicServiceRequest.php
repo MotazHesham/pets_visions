@@ -11,7 +11,7 @@ class UpdateClinicServiceRequest extends FormRequest
 {
     public function authorize()
     {
-        return Gate::allows('clinic_service_edit');
+        return true;
     }
 
     public function rules()

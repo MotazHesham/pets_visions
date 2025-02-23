@@ -21,6 +21,18 @@ if(!function_exists('currentClinic')){
     }
 } 
 
+if(!function_exists('currentHosting')){
+    function currentHosting(){
+        return auth()->user()->hosting;
+    }
+} 
+
+if(!function_exists('currentPetCompanion')){
+    function currentPetCompanion(){
+        return auth()->user()->petCompanion;
+    }
+} 
+
 if (!function_exists('getFromRequest')) {
     function getFromRequest($key,$default = null){
         return request()->has($key) && request($key) !== null ? request($key) : $default;

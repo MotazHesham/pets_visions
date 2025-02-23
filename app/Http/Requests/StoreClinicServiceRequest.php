@@ -11,7 +11,7 @@ class StoreClinicServiceRequest extends FormRequest
 {
     public function authorize()
     {
-        return Gate::allows('clinic_service_create');
+        return true;
     }
 
     public function rules()

@@ -11,7 +11,7 @@ class UpdateClinicReviewRequest extends FormRequest
 {
     public function authorize()
     {
-        return Gate::allows('clinic_review_edit');
+        return true;
     }
 
     public function rules()

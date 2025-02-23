@@ -11,7 +11,7 @@ class StoreClinicReviewRequest extends FormRequest
 {
     public function authorize()
     {
-        return Gate::allows('clinic_review_create');
+        return true;
     }
 
     public function rules()

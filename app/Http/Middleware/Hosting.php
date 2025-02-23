@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class Staff
+class Hosting
 {
     /**
      * Handle an incoming request.
@@ -16,13 +16,13 @@ class Staff
     public function handle(Request $request, Closure $next): Response
     {
         if (auth()->user()->user_type == 'staff') {
-            return $next($request);
+            return redirect()->route('admin.home');
         } elseif(auth()->user()->user_type == 'pet_companion') {
             return redirect()->route('pet-companion.home');
         } elseif(auth()->user()->user_type == 'clinic') {
             return redirect()->route('clinic.home');
         } elseif(auth()->user()->user_type == 'host') {
-            return redirect()->route('hosting.home');
+            return $next($request);
         }else {
             return redirect()->route('frontend.home');
         } 
