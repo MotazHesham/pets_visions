@@ -140,6 +140,11 @@
                                 <textarea class="form-control {{ $errors->has('delivery_text') ? 'is-invalid' : '' }}" name="delivery_text"
                                     id="delivery_text">{{ old('delivery_text', get_setting('delivery_text')) }}</textarea> 
                             </div>
+                            <div class="form-group col-md-6">
+                                <label for="terms">{{ trans('cruds.setting.fields.terms') }}</label>
+                                <textarea class="form-control ckeditor {{ $errors->has('terms') ? 'is-invalid' : '' }}" name="terms"
+                                    id="terms">{{ old('terms', get_setting('terms')) }}</textarea> 
+                            </div>
                         </div>
                         <div class="form-group">
                             <button class="btn btn-danger" type="submit">

@@ -40,6 +40,7 @@ class SettingsController extends Controller
             Setting::updateOrCreate(['key' => 'delivery_text'], ['value' => $request->delivery_text]); 
             Setting::updateOrCreate(['key' => 'missing_pet_text'], ['value' => $request->missing_pet_text]); 
             Setting::updateOrCreate(['key' => 'found_pet_text'], ['value' => $request->found_pet_text]); 
+            Setting::updateOrCreate(['key' => 'terms'], ['value' => $request->terms]); 
 
             if ($request->has('logo')) {
                 if( $request->input('logo') != "undefined"){ 

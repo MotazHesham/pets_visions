@@ -17,7 +17,13 @@
                         <h6>{{ $productDetail->price }} {{ currency_symbol() }}</h6>
                     </div>
                     <div class="cart-info"> 
-                        <a href="{{ route('frontend.dashboard.wishlists.update_or_create',$product->id) }}" class="add-to-wish tooltip-top"
+                        <a  @auth
+                                href="{{ route('frontend.dashboard.wishlists.update_or_create',$product->id) }}"
+                            @else
+                                href="javascript:void(0)"
+                                onclick="openAccount()"
+                            @endauth
+                            class="add-to-wish tooltip-top"
                             data-tippy-content="اضف الى امنياتي"><i
                                 data-feather="heart" class="add-to-wish"></i></a>
                         <a href="{{ route('frontend.products.show',['slug' => $productDetail->slug, 'name' => $productDetail->nonSpaceName()]) }}" class="tooltip-top"

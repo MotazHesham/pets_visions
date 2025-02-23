@@ -30,6 +30,10 @@ Route::group(['as' => 'frontend.'], function () {
     // Login
     Route::get('frontend/login', [AuthController::class,'login'])->name('login');
 
+    // Register
+    Route::get('frontend/register/{type}', [AuthController::class,'register_form'])->name('register');
+    Route::post('frontend/register', [AuthController::class,'register'])->name('register.store');
+
     Route::get('/', [HomeController::class,'index'])->name('home');
     Route::get('about', [HomeController::class,'about'])->name('about'); 
     Route::get('firstaids', [HomeController::class,'firstaids'])->name('firstaids');

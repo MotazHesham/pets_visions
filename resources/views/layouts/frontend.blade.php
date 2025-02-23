@@ -141,13 +141,13 @@
                 </div>
                 @include('partials.recaptcha')
                 <div class="form-group">
-                    <a href="javascript:void(0)" class="btn btn-solid btn-md btn-block ">{{ trans('frontend.login_modal.login') }}</a>
+                    <button type="submit" class="btn btn-solid btn-md btn-block ">{{ trans('frontend.login_modal.login') }}</button>
                 </div>
                 <div class="accout-fwd">
                     {{-- <a href="forget-pwd.html" class="d-block">
                         <h5>نسيت كلمة المرور؟</h5>
                     </a> --}}
-                    <a href="register.html" class="d-block">
+                    <a href="{{ route('frontend.register','select') }}" class="d-block">
                         <h6>{{ trans('frontend.login_modal.register_q') }}<span>{{ trans('frontend.login_modal.register') }}</span></h6>
                     </a>
                 </div>

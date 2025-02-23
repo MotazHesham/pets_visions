@@ -163,7 +163,13 @@
                                                     <i class="fa fa-shopping-cart"></i>
                                                     {{ trans('frontend.product.buy_now') }}
                                                 </a>
-                                                <a href="{{ route('frontend.dashboard.wishlists.update_or_create',$product->id) }}"
+                                                <a 
+                                                    @auth
+                                                        href="{{ route('frontend.dashboard.wishlists.update_or_create',$product->id) }}"
+                                                    @else
+                                                        href="javascript:void(0)"
+                                                        onclick="openAccount()"
+                                                    @endauth
                                                     class="btn btn-normal add-to-wish tooltip-top"
                                                     data-tippy-content="Add to wishlist">
                                                     <i class="fa fa-heart" aria-hidden="true"></i>
