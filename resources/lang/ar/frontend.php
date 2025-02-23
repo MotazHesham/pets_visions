@@ -333,7 +333,6 @@ return [
         'hosting_type' => 'نوع الاستضافة',
         'hosting_services' => 'خدمات الاستضافة',
         'commercial_register_photo' => 'السجل التجاري',
-        'pet_info' => 'بيانات الحيوان الأليف',
-        '' => '',
+        'pet_info' => 'بيانات الحيوان الأليف', 
     ],
 ];

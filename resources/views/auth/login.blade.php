@@ -1,81 +1,92 @@
-@extends('layouts.app')
-@section('content')
-<div class="row justify-content-center">
-    <div class="col-md-6">
-        <div class="card mx-4">
-            <div class="card-body p-4">
-                <h1>{{ trans('panel.site_title') }}</h1>
+<!doctype html>
+<html lang="en">
 
-                <p class="text-muted">{{ trans('global.login') }}</p>
+<head>
+    <title>{{ trans('panel.site_title') }}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-                @if(session('message'))
-                    <div class="alert alert-info" role="alert">
-                        {{ session('message') }}
-                    </div>
-                @endif
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
 
-                <form method="POST" action="{{ route('login') }}">
-                    @csrf
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">
-                                <i class="fa fa-user"></i>
-                            </span>
+    <link rel="stylesheet" href="{{ asset('loginDesign/style.css') }}">
+
+</head>
+
+<body>
+    <section class="ftco-section">
+        <div class="container">
+            
+            <div class="row justify-content-center">
+                <div class="col-md-12 col-lg-10">
+                    <div class="wrap d-md-flex">
+                        <div class="img" style="background-image: url('{{ asset("frontend/assets/images/host01.jpg") }}');">
                         </div>
-
-                        <input id="email" name="email" type="text" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" required autocomplete="email" autofocus placeholder="{{ trans('global.login_email') }}" value="{{ old('email', null) }}">
-
-                        @if($errors->has('email'))
-                            <div class="invalid-feedback">
-                                {{ $errors->first('email') }}
+                        <div class="login-wrap p-4 p-md-5">
+                            <div class="d-flex">
+                                <div class="w-100">
+                                    <h3 class="mb-4">{{ trans('global.login') }}</h3>
+                                </div> 
                             </div>
-                        @endif
-                    </div>
-
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="fa fa-lock"></i></span>
-                        </div>
-
-                        <input id="password" name="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" required placeholder="{{ trans('global.login_password') }}">
-
-                        @if($errors->has('password'))
-                            <div class="invalid-feedback">
-                                {{ $errors->first('password') }}
-                            </div>
-                        @endif
-                    </div>
-
-                    <div class="input-group mb-4">
-                        <div class="form-check checkbox">
-                            <input class="form-check-input" name="remember" type="checkbox" id="remember" style="vertical-align: middle;" />
-                            <label class="form-check-label" for="remember" style="vertical-align: middle;">
-                                {{ trans('global.remember_me') }}
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-6">
-                            <button type="submit" class="btn btn-primary px-4">
-                                {{ trans('global.login') }}
-                            </button>
-                        </div>
-                        <div class="col-6 text-right">
-                            @if(Route::has('password.request'))
-                                <a class="btn btn-link px-0" href="{{ route('password.request') }}">
-                                    {{ trans('global.forgot_password') }}
-                                </a><br>
+                            @if(session('message'))
+                                <div class="alert alert-info" role="alert">
+                                    {{ session('message') }}
+                                </div>
                             @endif
-                            <a class="btn btn-link px-0" href="{{ route('register') }}">
-                                {{ trans('global.register') }}
-                            </a>
+                            <form method="POST" action="{{ route('login') }}" class="signin-form">
+                                @csrf 
+                                <div class="form-group mb-3">
+                                    <label class="label" for="email">{{ trans('global.login_email') }}</label>
+
+                                    <input id="email" name="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" required autocomplete="email" autofocus placeholder="{{ trans('global.login_email') }}" value="{{ old('email', null) }}">
+                                    @if($errors->has('email'))
+                                        <div class="invalid-feedback">
+                                            {{ $errors->first('email') }}
+                                        </div>
+                                    @endif
+                                </div>
+                            
+                                <div class="form-group mb-3">
+                                    <label class="label" for="password">{{ trans('global.login_password') }}</label> 
+                                    <input id="password" name="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" required placeholder="{{ trans('global.login_password') }}">
+                                
+                                    @if($errors->has('password'))
+                                        <div class="invalid-feedback">
+                                            {{ $errors->first('password') }}
+                                        </div>
+                                    @endif
+                                </div>
+                                <div class="form-group d-md-flex">
+                                    <div class="w-50 text-left">
+                                        <label class="checkbox-wrap checkbox-primary mb-0">{{ trans('global.remember_me') }}
+                                            <input type="checkbox">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    </div> 
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="form-control btn btn-primary rounded submit px-3">
+                                        {{ trans('global.login') }}
+                                    </button>
+                                </div>
+                            </form> 
                         </div>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
-    </div>
-</div>
-@endsection
+    </section>
+
+    <script src="{{ asset('loginDesign/jquery.min.js') }}"></script>
+    <script src="{{ asset('loginDesign/popper.js') }}"></script>
+    <script src="{{ asset('loginDesign/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('loginDesign/main.js') }}"></script>
+
+    <script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015"
+        integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ=="
+        data-cf-beacon='{"rayId":"916a5fdee840e22d","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"version":"2025.1.0","token":"cd0b4b3a733644fc843ef0b185f98241"}'
+        crossorigin="anonymous"></script>
+</body>
+
+</html> 

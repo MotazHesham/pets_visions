@@ -19,6 +19,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::delete('users/destroy', 'UsersController@massDestroy')->name('users.massDestroy');
     Route::post('users/update_statuses', 'UsersController@update_statuses')->name('users.update_statuses');
     Route::resource('users', 'UsersController');
+    
+    // Pets Lovers
+    Route::resource('pets-lovers', 'PetsLoversController');
 
     // Audit Logs
     Route::resource('audit-logs', 'AuditLogsController', ['except' => ['create', 'store', 'edit', 'update', 'destroy']]);
@@ -149,11 +152,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::delete('user-pets/destroy', 'UserPetsController@massDestroy')->name('user-pets.massDestroy');
     Route::post('user-pets/media', 'UserPetsController@storeMedia')->name('user-pets.storeMedia');
     Route::post('user-pets/ckmedia', 'UserPetsController@storeCKEditorImages')->name('user-pets.storeCKEditorImages');
-    Route::resource('user-pets', 'UserPetsController');
-
-    // Pets Lovers
-    Route::delete('pets-lovers/destroy', 'PetsLoversController@massDestroy')->name('pets-lovers.massDestroy');
-    Route::resource('pets-lovers', 'PetsLoversController');
+    Route::resource('user-pets', 'UserPetsController'); 
 
     // Settings
     Route::post('settings/media', 'SettingsController@storeMedia')->name('settings.storeMedia');
