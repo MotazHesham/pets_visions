@@ -98,45 +98,45 @@ class NewsController extends Controller
         return redirect()->route('admin.newss.index');
     }
 
-    public function edit(News $news)
+    public function edit(News $newss)
     {
         abort_if(Gate::denies('news_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return view('admin.newss.edit', compact('news'));
+        return view('admin.newss.edit', compact('newss'));
     }
 
-    public function update(UpdateNewsRequest $request, News $news)
+    public function update(UpdateNewsRequest $request, News $newss)
     {
-        $news->update($request->all());
+        $newss->update($request->all());
 
         if ($request->input('photo', false)) {
-            if (! $news->photo || $request->input('photo') !== $news->photo->file_name) {
-                if ($news->photo) {
-                    $news->photo->delete();
+            if (! $newss->photo || $request->input('photo') !== $newss->photo->file_name) {
+                if ($newss->photo) {
+                    $newss->photo->delete();
                 }
-                $news->addMedia(storage_path('tmp/uploads/' . basename($request->input('photo'))))->toMediaCollection('photo');
+                $newss->addMedia(storage_path('tmp/uploads/' . basename($request->input('photo'))))->toMediaCollection('photo');
             }
-        } elseif ($news->photo) {
-            $news->photo->delete();
+        } elseif ($newss->photo) {
+            $newss->photo->delete();
         }
 
         return redirect()->route('admin.newss.index');
     }
 
-    public function show(News $news)
+    public function show(News $newss)
     {
         abort_if(Gate::denies('news_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $news->load('newsNewsComments');
+        $newss->load('newsNewsComments');
 
-        return view('admin.newss.show', compact('news'));
+        return view('admin.newss.show', compact('newss'));
     }
 
-    public function destroy(News $news)
+    public function destroy(News $newss)
     {
         abort_if(Gate::denies('news_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $news->delete();
+        $newss->delete();
 
         return back();
     }

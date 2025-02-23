@@ -3,40 +3,21 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\MassDestroyNewsCommentRequest;
 use App\Models\NewsComment;
-use Gate;
-use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Http\Request; 
 
 class NewsCommentsController extends Controller
 {
-    public function index()
-    {
-        abort_if(Gate::denies('news_comment_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+    public function store(Request $request){
+        $request->validate([
+            'news_id' => 'required|integer|exists:newss,id',
+            'name' => 'required|string|max:255',
+            'comment' => 'required|max:255',
+        ]);
 
-        $newsComments = NewsComment::with(['news'])->get();
+        NewsComment::create($request->only(['news_id','name','comment']));
 
-        return view('frontend.newsComments.index', compact('newsComments'));
-    }
-
-    public function destroy(NewsComment $newsComment)
-    {
-        abort_if(Gate::denies('news_comment_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-        $newsComment->delete();
-
-        return back();
-    }
-
-    public function massDestroy(MassDestroyNewsCommentRequest $request)
-    {
-        $newsComments = NewsComment::find(request('ids'));
-
-        foreach ($newsComments as $newsComment) {
-            $newsComment->delete();
-        }
-
-        return response(null, Response::HTTP_NO_CONTENT);
+        toast(trans('frontend.toast.success'),'success');
+        return redirect()->back(); 
     }
 }

@@ -20,7 +20,7 @@
                             {{ trans('cruds.news.fields.id') }}
                         </th>
                         <td>
-                            {{ $news->id }}
+                            {{ $newss->id }}
                         </td>
                     </tr>
                     <tr>
@@ -28,7 +28,7 @@
                             {{ trans('cruds.news.fields.added_by') }}
                         </th>
                         <td>
-                            {{ App\Models\News::ADDED_BY_SELECT[$news->added_by] ?? '' }}
+                            {{ App\Models\News::ADDED_BY_SELECT[$newss->added_by] ?? '' }}
                         </td>
                     </tr>
                     <tr>
@@ -36,7 +36,7 @@
                             {{ trans('cruds.news.fields.title') }}
                         </th>
                         <td>
-                            {{ $news->title }}
+                            {{ $newss->title }}
                         </td>
                     </tr>
                     <tr>
@@ -44,7 +44,7 @@
                             {{ trans('cruds.news.fields.short_description') }}
                         </th>
                         <td>
-                            {{ $news->short_description }}
+                            {{ $newss->short_description }}
                         </td>
                     </tr>
                     <tr>
@@ -52,7 +52,7 @@
                             {{ trans('cruds.news.fields.description') }}
                         </th>
                         <td>
-                            {!! $news->description !!}
+                            {!! $newss->description !!}
                         </td>
                     </tr>
                     <tr>
@@ -60,9 +60,9 @@
                             {{ trans('cruds.news.fields.photo') }}
                         </th>
                         <td>
-                            @if($news->photo)
-                                <a href="{{ $news->photo->getUrl() }}" target="_blank" style="display: inline-block">
-                                    <img src="{{ $news->photo->getUrl('thumb') }}">
+                            @if($newss->photo)
+                                <a href="{{ $newss->photo->getUrl() }}" target="_blank" style="display: inline-block">
+                                    <img src="{{ $newss->photo->getUrl('thumb') }}">
                                 </a>
                             @endif
                         </td>
@@ -72,7 +72,7 @@
                             {{ trans('cruds.news.fields.published') }}
                         </th>
                         <td>
-                            <input type="checkbox" disabled="disabled" {{ $news->published ? 'checked' : '' }}>
+                            <input type="checkbox" disabled="disabled" {{ $newss->published ? 'checked' : '' }}>
                         </td>
                     </tr>
                     <tr>
@@ -80,7 +80,7 @@
                             {{ trans('cruds.news.fields.featured') }}
                         </th>
                         <td>
-                            <input type="checkbox" disabled="disabled" {{ $news->featured ? 'checked' : '' }}>
+                            <input type="checkbox" disabled="disabled" {{ $newss->featured ? 'checked' : '' }}>
                         </td>
                     </tr>
                 </tbody>
@@ -107,7 +107,7 @@
     </ul>
     <div class="tab-content">
         <div class="tab-pane" role="tabpanel" id="news_news_comments">
-            @includeIf('admin.newss.relationships.newsNewsComments', ['newsComments' => $news->newsNewsComments])
+            @includeIf('admin.newss.relationships.newsNewsComments', ['newsComments' => $newss->newsNewsComments])
         </div>
     </div>
 </div>

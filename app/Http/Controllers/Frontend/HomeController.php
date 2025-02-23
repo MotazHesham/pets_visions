@@ -23,4 +23,8 @@ class HomeController
         $paramedics = Paramedic::where('active',1)->get();
         return view("frontend.firstaids",compact('paramedics'));
     }
+
+    public function about(){
+        return view("frontend.about");
+    }
 }

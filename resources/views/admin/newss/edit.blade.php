@@ -7,7 +7,7 @@
     </div>
 
     <div class="card-body">
-        <form method="POST" action="{{ route("admin.newss.update", [$news->id]) }}" enctype="multipart/form-data">
+        <form method="POST" action="{{ route("admin.newss.update", [$newss->id]) }}" enctype="multipart/form-data">
             @method('PUT')
             @csrf
             <div class="form-group">
@@ -15,7 +15,7 @@
                 <select class="form-control {{ $errors->has('added_by') ? 'is-invalid' : '' }}" name="added_by" id="added_by">
                     <option value disabled {{ old('added_by', null) === null ? 'selected' : '' }}>{{ trans('global.pleaseSelect') }}</option>
                     @foreach(App\Models\News::ADDED_BY_SELECT as $key => $label)
-                        <option value="{{ $key }}" {{ old('added_by', $news->added_by) === (string) $key ? 'selected' : '' }}>{{ $label }}</option>
+                        <option value="{{ $key }}" {{ old('added_by', $newss->added_by) === (string) $key ? 'selected' : '' }}>{{ $label }}</option>
                     @endforeach
                 </select>
                 @if($errors->has('added_by'))
@@ -27,7 +27,7 @@
             </div>
             <div class="form-group">
                 <label for="title">{{ trans('cruds.news.fields.title') }}</label>
-                <input class="form-control {{ $errors->has('title') ? 'is-invalid' : '' }}" type="text" name="title" id="title" value="{{ old('title', $news->title) }}">
+                <input class="form-control {{ $errors->has('title') ? 'is-invalid' : '' }}" type="text" name="title" id="title" value="{{ old('title', $newss->title) }}">
                 @if($errors->has('title'))
                     <div class="invalid-feedback">
                         {{ $errors->first('title') }}
@@ -37,7 +37,7 @@
             </div>
             <div class="form-group">
                 <label for="short_description">{{ trans('cruds.news.fields.short_description') }}</label>
-                <textarea class="form-control {{ $errors->has('short_description') ? 'is-invalid' : '' }}" name="short_description" id="short_description">{{ old('short_description', $news->short_description) }}</textarea>
+                <textarea class="form-control {{ $errors->has('short_description') ? 'is-invalid' : '' }}" name="short_description" id="short_description">{{ old('short_description', $newss->short_description) }}</textarea>
                 @if($errors->has('short_description'))
                     <div class="invalid-feedback">
                         {{ $errors->first('short_description') }}
@@ -47,7 +47,7 @@
             </div>
             <div class="form-group">
                 <label for="description">{{ trans('cruds.news.fields.description') }}</label>
-                <textarea class="form-control ckeditor {{ $errors->has('description') ? 'is-invalid' : '' }}" name="description" id="description">{!! old('description', $news->description) !!}</textarea>
+                <textarea class="form-control ckeditor {{ $errors->has('description') ? 'is-invalid' : '' }}" name="description" id="description">{!! old('description', $newss->description) !!}</textarea>
                 @if($errors->has('description'))
                     <div class="invalid-feedback">
                         {{ $errors->first('description') }}
@@ -69,7 +69,7 @@
             <div class="form-group">
                 <div class="form-check {{ $errors->has('published') ? 'is-invalid' : '' }}">
                     <input type="hidden" name="published" value="0">
-                    <input class="form-check-input" type="checkbox" name="published" id="published" value="1" {{ $news->published || old('published', 0) === 1 ? 'checked' : '' }}>
+                    <input class="form-check-input" type="checkbox" name="published" id="published" value="1" {{ $newss->published || old('published', 0) === 1 ? 'checked' : '' }}>
                     <label class="form-check-label" for="published">{{ trans('cruds.news.fields.published') }}</label>
                 </div>
                 @if($errors->has('published'))
@@ -82,7 +82,7 @@
             <div class="form-group">
                 <div class="form-check {{ $errors->has('featured') ? 'is-invalid' : '' }}">
                     <input type="hidden" name="featured" value="0">
-                    <input class="form-check-input" type="checkbox" name="featured" id="featured" value="1" {{ $news->featured || old('featured', 0) === 1 ? 'checked' : '' }}>
+                    <input class="form-check-input" type="checkbox" name="featured" id="featured" value="1" {{ $newss->featured || old('featured', 0) === 1 ? 'checked' : '' }}>
                     <label class="form-check-label" for="featured">{{ trans('cruds.news.fields.featured') }}</label>
                 </div>
                 @if($errors->has('featured'))
@@ -150,7 +150,7 @@
                 // Send request
                 var data = new FormData();
                 data.append('upload', file);
-                data.append('crud_id', '{{ $news->id ?? 0 }}');
+                data.append('crud_id', '{{ $newss->id ?? 0 }}');
                 xhr.send(data);
               });
             })
@@ -197,8 +197,8 @@
       }
     },
     init: function () {
-@if(isset($news) && $news->photo)
-      var file = {!! json_encode($news->photo) !!}
+@if(isset($newss) && $newss->photo)
+      var file = {!! json_encode($newss->photo) !!}
           this.options.addedfile.call(this, file)
       this.options.thumbnail.call(this, file, file.preview ?? file.preview_url)
       file.previewElement.classList.add('dz-complete')

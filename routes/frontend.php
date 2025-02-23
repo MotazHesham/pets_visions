@@ -9,6 +9,8 @@ use App\Http\Controllers\Frontend\DeliveryPetsController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\HostingReviewsController;
 use App\Http\Controllers\Frontend\HostingsController;
+use App\Http\Controllers\Frontend\NewsCommentsController;
+use App\Http\Controllers\Frontend\NewsController;
 use App\Http\Controllers\Frontend\PetCompanionReviewsController;
 use App\Http\Controllers\Frontend\PetCompanionsController;
 use App\Http\Controllers\Frontend\ProductController;
@@ -78,10 +80,16 @@ Route::group(['as' => 'frontend.'], function () {
     Route::get('delivery-pets', [DeliveryPetsController::class,'delivery_pets'])->name('delivery-pets');
     Route::post('delivery-pets/store', [DeliveryPetsController::class,'store'])->name('delivery-pets.store');
 
+    // news
+    Route::get('news', [NewsController::class,'news'])->name('news'); 
+    Route::get('news/{id}', [NewsController::class,'show'])->name('news.show'); 
+    
+    // newsComment
+    Route::post('news-comment/store', [NewsCommentsController::class,'store'])->name('news-comments.store');
+
     // Subscriptions
     Route::post('subscriptions/store', [SubscriptionsController::class,'store'])->name('subscriptions.store');
 
-    Route::get('news', [HomeController::class,'news'])->name('news'); 
     Route::get('volunteer', [HomeController::class,'volunteer'])->name('volunteer');
 
     Route::get('frontend/profile', 'ProfileController@index')->name('profile.index');
