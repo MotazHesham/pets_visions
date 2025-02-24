@@ -11,7 +11,7 @@ class UpdatePetCompanionRequest extends FormRequest
 {
     public function authorize()
     {
-        return Gate::allows('pet_companion_edit');
+        return true;
     }
 
     public function rules()

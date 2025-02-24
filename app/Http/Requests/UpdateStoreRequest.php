@@ -11,7 +11,7 @@ class UpdateStoreRequest extends FormRequest
 {
     public function authorize()
     {
-        return Gate::allows('store_edit');
+        return true;
     }
 
     public function rules()

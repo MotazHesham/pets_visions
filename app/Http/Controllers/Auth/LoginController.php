@@ -36,14 +36,5 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
-    }
-
-    public function redirectTo()
-    {
-        if (auth()->user()->is_admin) {
-            return '/admin';
-        }
-
-        return '/home';
-    }
+    } 
 }

@@ -11,7 +11,7 @@ class UpdateHostingRequest extends FormRequest
 {
     public function authorize()
     {
-        return Gate::allows('hosting_edit');
+        return true;
     }
 
     public function rules()

@@ -19,6 +19,7 @@ return [
     'forgot_password'                => 'نسيت كلمة المرور؟',
     'home'                           => 'الرئيسية',
     'list'                           => 'قائمة',
+    'reviews'                        => 'التقييمات',
     'login'                          => 'تسجيل الدخول',
     'login_email'                    => 'البريد الالكتروني',
     'login_password'                 => 'كلمة السر',

@@ -23,6 +23,8 @@ class Staff
             return redirect()->route('clinic.home');
         } elseif(auth()->user()->user_type == 'host') {
             return redirect()->route('hosting.home');
+        } elseif(auth()->user()->user_type == 'store') {
+            return redirect()->route('store.home');
         }else {
             return redirect()->route('frontend.home');
         } 

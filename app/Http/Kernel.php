@@ -31,6 +31,7 @@ class Kernel extends HttpKernel
         'staff'            => \App\Http\Middleware\Staff::class,
         'clinic'           => \App\Http\Middleware\Clinic::class,
         'hosting'          => \App\Http\Middleware\Hosting::class,
+        'store'            => \App\Http\Middleware\Store::class,
         'pet-companion'    => \App\Http\Middleware\PetCompanion::class,
     ];
 

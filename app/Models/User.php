@@ -124,6 +124,9 @@ class User extends Authenticatable
     public function clinic(){
         return $this->hasOne(Clinic::class);
     }
+    public function store(){
+        return $this->hasOne(Store::class);
+    }
     public function hosting(){
         return $this->hasOne(Hosting::class);
     }

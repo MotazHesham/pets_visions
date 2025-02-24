@@ -23,6 +23,8 @@ class Hosting
             return redirect()->route('clinic.home');
         } elseif(auth()->user()->user_type == 'host') {
             return $next($request);
+        } elseif(auth()->user()->user_type == 'store') {
+            return redirect()->route('store.home');
         }else {
             return redirect()->route('frontend.home');
         } 

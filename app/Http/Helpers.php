@@ -21,6 +21,12 @@ if(!function_exists('currentClinic')){
     }
 } 
 
+if(!function_exists('currentStore')){
+    function currentStore(){
+        return auth()->user()->store;
+    }
+} 
+
 if(!function_exists('currentHosting')){
     function currentHosting(){
         return auth()->user()->hosting;
