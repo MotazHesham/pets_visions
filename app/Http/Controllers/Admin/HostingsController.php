@@ -250,8 +250,8 @@ class HostingsController extends Controller
         abort_if(Gate::denies('hosting_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $hosting->load('user', 'hosting_services');
-
-        return view('admin.hostings.show', compact('hosting'));
+        $user = $hosting->user;
+        return view('admin.hostings.show', compact('hosting','user'));
     }
 
     public function destroy(Hosting $hosting)

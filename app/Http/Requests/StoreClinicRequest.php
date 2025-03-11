@@ -28,13 +28,13 @@ class StoreClinicRequest extends FormRequest
             'password' => [
                 'required',
             ], 
-            'identity_num' => [
-                'string',
+            'identity_num' => [ 
                 'nullable',
+                'regex:/^1\d{9}$/', 
             ],
-            'phone' => [
-                'string',
+            'phone' => [ 
                 'nullable',
+                'regex:/^05\d{8}$/',
             ],
             'user_position' => [
                 'string',
@@ -45,7 +45,7 @@ class StoreClinicRequest extends FormRequest
                 'required',
             ],
             'clinic_phone' => [
-                'string',
+                'regex:/^05\d{8}$/',
                 'nullable',
             ],
             'unified_phone' => [

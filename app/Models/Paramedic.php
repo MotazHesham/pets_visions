@@ -34,7 +34,7 @@ class Paramedic extends Model
 
     public function getIsActiveAttribute()
     {
-        $now = Carbon::now();
+        $now = Carbon::now(); 
         return $now->between(Carbon::parse($this->from_time), Carbon::parse($this->to_time));
     }
     

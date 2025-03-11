@@ -27,13 +27,14 @@ class StoreStoreRequest extends FormRequest
             ],
             'password' => [
                 'required',
+                'min:6',
             ], 
             'identity_num' => [
-                'string',
+                'regex:/^1\d{9}$/',
                 'nullable',
             ],
             'phone' => [
-                'string',
+                'regex:/^05\d{8}$/',
                 'nullable',
             ],
             'user_position' => [
@@ -45,7 +46,7 @@ class StoreStoreRequest extends FormRequest
                 'required',
             ],
             'store_phone' => [
-                'string',
+                'regex:/^05\d{8}$/',
                 'nullable',
             ],
             'address' => [

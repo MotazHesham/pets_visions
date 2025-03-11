@@ -27,10 +27,10 @@ class UpdateClinicRequest extends FormRequest
             ], 
             'identity_num' => [
                 'string',
-                'nullable',
+                'regex:/^1\d{9}$/',
             ],
             'phone' => [
-                'string',
+                'regex:/^05\d{8}$/',
                 'nullable',
             ],
             'user_position' => [
@@ -42,7 +42,7 @@ class UpdateClinicRequest extends FormRequest
                 'required',
             ],
             'clinic_phone' => [
-                'string',
+                'regex:/^05\d{8}$/',
                 'nullable',
             ],
             'unified_phone' => [
