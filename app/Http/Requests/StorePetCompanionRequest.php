@@ -27,6 +27,7 @@ class StorePetCompanionRequest extends FormRequest
             ],
             'password' => [
                 'required',
+                'min:6'
             ], 
             'identity_num' => [
                 'string',

@@ -17,6 +17,13 @@ class SlidersController extends Controller
 {
     use MediaUploadingTrait;
 
+    public function update_statuses(Request $request){ 
+        $type = $request->type;
+        $slider = Slider::findOrFail($request->id);
+        $slider->$type = $request->status; 
+        $slider->save();
+        return 1;
+    }
     public function index()
     {
         abort_if(Gate::denies('slider_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');

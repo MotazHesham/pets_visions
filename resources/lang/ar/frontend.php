@@ -2,6 +2,7 @@
 
 return [
     'remove' => 'حذف',
+    'notApproved' => 'موقوف حاليا',
     'toast' => [
         'success' => 'تم بنجاح',
         'error' => 'حدث خطأ ما',

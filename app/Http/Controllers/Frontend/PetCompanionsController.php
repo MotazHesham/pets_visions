@@ -11,7 +11,9 @@ class PetCompanionsController extends Controller
 
     public function pet_companions()
     { 
-        $petCompanions = PetCompanion::with(['user', 'media']);
+        $petCompanions = PetCompanion::whereHas('user' , function($q){
+                                            return $q->where('approved' , 1);
+                                        })->with(['user', 'media']);
 
         if(getFromRequest('search')){
             $petCompanions = $petCompanions->whereHas('user',function($q){
@@ -26,6 +28,10 @@ class PetCompanionsController extends Controller
 
     public function show($id){
         $petCompanion = PetCompanion::with(['user', 'media'])->findOrFail($id);
+        if(!$petCompanion->user->approved){
+            toast(trans('frontend.notApproved'),'warning');
+            return redirect()->route('frontend.home');
+        }
         return view('frontend.petCompanions.show', compact('petCompanion'));
     }
 }

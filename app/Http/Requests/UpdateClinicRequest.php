@@ -27,7 +27,7 @@ class UpdateClinicRequest extends FormRequest
             ], 
             'identity_num' => [
                 'string',
-                'regex:/^1\d{9}$/',
+                'regex:/^[12]\d{9}$/',
             ],
             'phone' => [
                 'regex:/^05\d{8}$/',

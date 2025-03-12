@@ -74,7 +74,7 @@ class AuthController extends Controller
             'user_type' => 'required|in:'.implode(',',array_keys(User::USER_TYPE_SELECT)), 
             'name' => 'string|required|max:255',
             'email' => 'required|unique:users|max:255', 
-            'password' => 'required|max:255', 
+            'password' => 'required|max:255|min:6', 
             'identity_num' => 'string|nullable|max:255',
             'phone' => 'string|nullable|max:255',
             'user_position' => 'string|nullable|max:255',  

@@ -11,7 +11,9 @@ use Illuminate\Http\Request;
 class ShopController extends Controller
 {
     public function shops(){
-        $shops = Store::orderBy('created_at','desc');
+        $shops = Store::whereHas('user' , function($q){
+                            return $q->where('approved' , 1);
+                        })->orderBy('created_at','desc');
         if(getFromRequest('search')){
             $shops = $shops->where('store_name','LIKE','%'.getFromRequest('search').'%');perPage: 
         }
@@ -25,6 +27,10 @@ class ShopController extends Controller
 
         $categories = ProductCategory::get();
         $shop = Store::findOrFail($id); 
+        if(!$shop->user->approved){
+            toast(trans('frontend.notApproved'),'warning');
+            return redirect()->route('frontend.home');
+        }
         $products = Product::with('store')
                             ->where('published',1)
                             ->where('store_id',$shop->id);

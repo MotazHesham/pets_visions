@@ -201,7 +201,7 @@ return [
             'video_provider'          => 'مزود الفيديو',
             'video_provider_helper'   => ' ',
             'video_link'              => 'رابط الفيديو',
-            'video_link_helper'       => ' ',
+            'video_link_helper'       => 'كود ال iFrame',
             'added_by'                => 'أضيف بواسطة',
             'added_by_helper'         => ' ',
             'tags'                    => 'الدلالات البحثية',

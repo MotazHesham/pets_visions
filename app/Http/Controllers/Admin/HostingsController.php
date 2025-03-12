@@ -81,8 +81,14 @@ class HostingsController extends Controller
 
                 return implode(' ', $labels);
             });
+            $table->editColumn('user_approved', function ($row) {
+                return '<label class="c-switch c-switch-pill c-switch-success">
+                            <input onchange="update_statuses(this,\'approved\')" value="'. $row->user_id .'" type="checkbox" class="c-switch-input" '. ($row->user->approved ? "checked" : null) .' >
+                            <span class="c-switch-slider"></span>
+                        </label>' ;
+            });
 
-            $table->rawColumns(['actions', 'placeholder', 'user', 'logo', 'hosting_services']);
+            $table->rawColumns(['actions', 'placeholder', 'user', 'user_approved', 'logo', 'hosting_services']);
 
             return $table->make(true);
         }

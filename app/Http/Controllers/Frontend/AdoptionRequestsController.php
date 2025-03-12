@@ -30,7 +30,7 @@ class AdoptionRequestsController extends Controller
                 'max:255'
             ],
             'phone' => [
-                'string',
+                'regex:/^05\d{8}$/',
                 'required',
                 'max:255'
             ],

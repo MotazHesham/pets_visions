@@ -10,7 +10,9 @@ class HostingsController extends Controller
 { 
     public function hostings()
     {  
-        $hostings = Hosting::with(['user', 'hosting_services', 'media']);
+        $hostings = Hosting::whereHas('user' , function($q){
+                                return $q->where('approved' , 1);
+                            })->with(['user', 'hosting_services', 'media']);
 
         if(getFromRequest('search')){
             $hostings = $hostings->where('hosting_name', 'LIKE', '%' . getFromRequest('search') . '%'); 

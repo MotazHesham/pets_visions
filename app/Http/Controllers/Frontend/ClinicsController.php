@@ -9,7 +9,9 @@ use Illuminate\Http\Request;
 class ClinicsController extends Controller
 {
     public function clinics(){ 
-        $clinics = Clinic::orderBy('created_at','desc');
+        $clinics = Clinic::whereHas('user' , function($q){
+                                return $q->where('approved' , 1);
+                            })->orderBy('created_at','desc');
         if(getFromRequest('search')){
             $clinics = $clinics->where('clinic_name','LIKE','%'.getFromRequest('search').'%');
         }
@@ -19,6 +21,10 @@ class ClinicsController extends Controller
     
     public function show($id){
         $clinic = Clinic::findOrFail($id);
+        if(!$clinic->user->approved){
+            toast(trans('frontend.notApproved'),'warning');
+            return redirect()->route('frontend.home');
+        }
         return view('frontend.clinics.show', compact('clinic'));
     }
 }

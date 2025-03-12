@@ -26,7 +26,7 @@ class UpdateStoreRequest extends FormRequest
                 'unique:users,email,' . request()->user_id,
             ], 
             'identity_num' => [
-                'regex:/^1\d{9}$/',
+                'regex:/^[12]\d{9}$/',
                 'nullable',
             ],
             'phone' => [

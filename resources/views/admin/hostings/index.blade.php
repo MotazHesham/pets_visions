@@ -43,6 +43,9 @@
                             {{ trans('cruds.hosting.fields.hosting_services') }}
                         </th>
                         <th>
+                            {{ trans('cruds.user.fields.approved') }}
+                        </th>
+                        <th>
                             &nbsp;
                         </th>
                     </tr>
@@ -152,6 +155,10 @@
                     {
                         data: 'hosting_services',
                         name: 'hosting_services.name'
+                    },
+                    {
+                        data: 'user_approved',
+                        name: 'user.approved'
                     },
                     {
                         data: 'actions',

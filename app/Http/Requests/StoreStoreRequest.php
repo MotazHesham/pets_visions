@@ -30,7 +30,7 @@ class StoreStoreRequest extends FormRequest
                 'min:6',
             ], 
             'identity_num' => [
-                'regex:/^1\d{9}$/',
+                'regex:/^[12]\d{9}$/',
                 'nullable',
             ],
             'phone' => [

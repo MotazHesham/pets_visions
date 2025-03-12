@@ -2,6 +2,7 @@
 
 return [
     'remove' => 'Delete',
+    'notApproved' => 'Not Accessable Yet',
     'toast' => [
         'success' => 'Successful',
         'error' => 'Something went wrong',

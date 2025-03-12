@@ -27,6 +27,7 @@ class StorePetsLoverRequest extends FormRequest
             ],
             'password' => [
                 'required',
+                'min:6'
             ], 
             'phone' => [
                 'string',

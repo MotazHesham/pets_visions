@@ -123,6 +123,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     // Sliders
     Route::delete('sliders/destroy', 'SlidersController@massDestroy')->name('sliders.massDestroy');
     Route::post('sliders/media', 'SlidersController@storeMedia')->name('sliders.storeMedia');
+    Route::post('sliders/update_statuses', 'SlidersController@update_statuses')->name('sliders.update_statuses');
     Route::post('sliders/ckmedia', 'SlidersController@storeCKEditorImages')->name('sliders.storeCKEditorImages');
     Route::resource('sliders', 'SlidersController');
 
@@ -136,6 +137,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
 
     // News
     Route::delete('newss/destroy', 'NewsController@massDestroy')->name('newss.massDestroy');
+    Route::post('newss/update_statuses', 'NewsController@update_statuses')->name('newss.update_statuses');
     Route::post('newss/media', 'NewsController@storeMedia')->name('newss.storeMedia');
     Route::post('newss/ckmedia', 'NewsController@storeCKEditorImages')->name('newss.storeCKEditorImages');
     Route::resource('newss', 'NewsController');
